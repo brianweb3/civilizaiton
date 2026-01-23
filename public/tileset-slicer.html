@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sprite Sheet Slicer - NOCRACY</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #F4F1E8;
+      color: #2C2416;
+      padding: 20px;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 8px;
+      padding: 30px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    
+    h1 {
+      margin-bottom: 10px;
+      color: #2A74B8;
+    }
+    
+    .subtitle {
+      color: #666;
+      margin-bottom: 30px;
+    }
+    
+    .section {
+      margin-bottom: 30px;
+      padding: 20px;
+      background: #FAF9F6;
+      border-radius: 6px;
+      border: 1px solid #E5E0D6;
+    }
+    
+    .section h2 {
+      font-size: 18px;
+      margin-bottom: 15px;
+      color: #2C2416;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: #2C2416;
+    }
+    
+    input[type="file"],
+    input[type="number"],
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #D4C5B0;
+      border-radius: 4px;
+      font-size: 14px;
+      background: white;
+    }
+    
+    input[type="file"] {
+      padding: 8px;
+    }
+    
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      margin-bottom: 15px;
+    }
+    
+    button {
+      background: #2A74B8;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 4px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    
+    button:hover {
+      background: #1E5A8A;
+    }
+    
+    button:disabled {
+      background: #CCC;
+      cursor: not-allowed;
+    }
+    
+    .preview {
+      margin-top: 20px;
+      padding: 15px;
+      background: white;
+      border: 1px solid #D4C5B0;
+      border-radius: 4px;
+    }
+    
+    .preview img {
+      max-width: 100%;
+      image-rendering: pixelated;
+      image-rendering: -moz-crisp-edges;
+      image-rendering: crisp-edges;
+    }
+    
+    .grid-preview {
+      display: grid;
+      gap: 2px;
+      margin-top: 15px;
+      padding: 10px;
+      background: #E5E0D6;
+      border-radius: 4px;
+    }
+    
+    .tile-preview {
+      background: white;
+      border: 1px solid #D4C5B0;
+      image-rendering: pixelated;
+    }
+    
+    .output {
+      margin-top: 20px;
+      padding: 15px;
+      background: #2C2416;
+      color: #F4F1E8;
+      border-radius: 4px;
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+      max-height: 400px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+    
+    .download-btn {
+      margin-top: 10px;
+      background: #2E8B57;
+    }
+    
+    .download-btn:hover {
+      background: #246B44;
+    }
+    
+    .info {
+      margin-top: 10px;
+      padding: 10px;
+      background: #E8F4F8;
+      border-left: 3px solid #2A74B8;
+      border-radius: 4px;
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎨 Sprite Sheet Slicer</h1>
+    <p class="subtitle">Нарежьте PNG спрайт-лист на отдельные тайлы</p>
+    
+    <div class="section">
+      <h2>1. Загрузите спрайт-лист</h2>
+      <input type="file" id="fileInput" accept="image/png,image/jpeg" />
+      <div id="fileInfo" class="info" style="display: none;"></div>
+    </div>
+    
+    <div class="section">
+      <h2>2. Настройки нарезки</h2>
+      <div class="row">
+        <div>
+          <label for="tileSize">Размер тайла (пиксели):</label>
+          <input type="number" id="tileSize" value="16" min="1" max="256" />
+        </div>
+        <div>
+          <label for="prefix">Префикс имени файла:</label>
+          <input type="text" id="prefix" value="tile" />
+        </div>
+      </div>
+    </div>
+    
+    <div class="section">
+      <h2>3. Предпросмотр</h2>
+      <div id="preview" class="preview" style="display: none;">
+        <div id="imagePreview"></div>
+        <div id="gridPreview" class="grid-preview"></div>
+      </div>
+    </div>
+    
+    <div class="section">
+      <h2>4. Нарезать и скачать</h2>
+      <button id="sliceBtn" disabled>Нарезать спрайты</button>
+      <div id="output" class="output" style="display: none;"></div>
+      <button id="downloadBtn" class="download-btn" style="display: none;">Скачать ZIP архив</button>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script>
+    const fileInput = document.getElementById('fileInput');
+    const tileSizeInput = document.getElementById('tileSize');
+    const prefixInput = document.getElementById('prefix');
+    const sliceBtn = document.getElementById('sliceBtn');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const fileInfo = document.getElementById('fileInfo');
+    const preview = document.getElementById('preview');
+    const imagePreview = document.getElementById('imagePreview');
+    const gridPreview = document.getElementById('gridPreview');
+    const output = document.getElementById('output');
+    
+    let currentImage = null;
+    let tiles = [];
+    
+    fileInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const img = new Image();
+        img.onload = () => {
+          currentImage = img;
+          fileInfo.style.display = 'block';
+          fileInfo.innerHTML = `
+            <strong>Файл:</strong> ${file.name}<br>
+            <strong>Размер:</strong> ${img.width} × ${img.height} пикселей<br>
+            <strong>Тайлов:</strong> ${Math.floor(img.width / parseInt(tileSizeInput.value))} × ${Math.floor(img.height / parseInt(tileSizeInput.value))}
+          `;
+          updatePreview();
+          sliceBtn.disabled = false;
+        };
+        img.src = event.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
+    
+    tileSizeInput.addEventListener('input', () => {
+      if (currentImage) {
+        updatePreview();
+      }
+    });
+    
+    function updatePreview() {
+      if (!currentImage) return;
+      
+      const tileSize = parseInt(tileSizeInput.value);
+      const cols = Math.floor(currentImage.width / tileSize);
+      const rows = Math.floor(currentImage.height / tileSize);
+      
+      // Показываем оригинальное изображение
+      imagePreview.innerHTML = `
+        <img src="${currentImage.src}" alt="Original" style="max-width: 100%;" />
+        <p style="margin-top: 10px; font-size: 12px; color: #666;">
+          Сетка: ${cols} × ${rows} тайлов
+        </p>
+      `;
+      
+      // Показываем сетку тайлов
+      gridPreview.style.gridTemplateColumns = `repeat(${Math.min(cols, 10)}, 1fr)`;
+      gridPreview.innerHTML = '';
+      
+      const previewCount = Math.min(cols * rows, 50); // Показываем максимум 50 тайлов для предпросмотра
+      for (let i = 0; i < previewCount; i++) {
+        const row = Math.floor(i / cols);
+        const col = i % cols;
+        const x = col * tileSize;
+        const y = row * tileSize;
+        
+        const canvas = document.createElement('canvas');
+        canvas.width = tileSize;
+        canvas.height = tileSize;
+        const ctx = canvas.getContext('2d');
+        ctx.imageSmoothingEnabled = false;
+        ctx.drawImage(currentImage, x, y, tileSize, tileSize, 0, 0, tileSize, tileSize);
+        
+        const tileDiv = document.createElement('div');
+        tileDiv.className = 'tile-preview';
+        tileDiv.style.width = `${tileSize * 2}px`;
+        tileDiv.style.height = `${tileSize * 2}px`;
+        tileDiv.style.backgroundImage = `url(${canvas.toDataURL()})`;
+        tileDiv.style.backgroundSize = `${tileSize * 2}px ${tileSize * 2}px`;
+        tileDiv.style.imageRendering = 'pixelated';
+        gridPreview.appendChild(tileDiv);
+      }
+      
+      if (previewCount < cols * rows) {
+        const moreDiv = document.createElement('div');
+        moreDiv.style.gridColumn = 'span 10';
+        moreDiv.style.textAlign = 'center';
+        moreDiv.style.padding = '10px';
+        moreDiv.style.color = '#666';
+        moreDiv.textContent = `... и еще ${cols * rows - previewCount} тайлов`;
+        gridPreview.appendChild(moreDiv);
+      }
+      
+      preview.style.display = 'block';
+    }
+    
+    sliceBtn.addEventListener('click', async () => {
+      if (!currentImage) return;
+      
+      sliceBtn.disabled = true;
+      sliceBtn.textContent = 'Нарезаю...';
+      
+      const tileSize = parseInt(tileSizeInput.value);
+      const prefix = prefixInput.value || 'tile';
+      const cols = Math.floor(currentImage.width / tileSize);
+      const rows = Math.floor(currentImage.height / tileSize);
+      
+      tiles = [];
+      const tileMap = {};
+      const zip = new JSZip();
+      
+      // Создаем canvas для нарезки
+      const canvas = document.createElement('canvas');
+      canvas.width = tileSize;
+      canvas.height = tileSize;
+      const ctx = canvas.getContext('2d');
+      ctx.imageSmoothingEnabled = false;
+      
+      // Нарезаем тайлы
+      for (let row = 0; row < rows; row++) {
+        for (let col = 0; col < cols; col++) {
+          const x = col * tileSize;
+          const y = row * tileSize;
+          
+          // Очищаем canvas
+          ctx.clearRect(0, 0, tileSize, tileSize);
+          
+          // Копируем часть изображения
+          ctx.drawImage(
+            currentImage,
+            x, y, tileSize, tileSize,
+            0, 0, tileSize, tileSize
+          );
+          
+          // Сохраняем в ZIP
+          const tileName = `${prefix}_${row}_${col}.png`;
+          const dataUrl = canvas.toDataURL('image/png');
+          const base64 = dataUrl.split(',')[1];
+          zip.file(tileName, base64, { base64: true });
+          
+          // Сохраняем координаты
+          const key = `${prefix}_${row}_${col}`;
+          tileMap[key] = [x, y];
+          
+          tiles.push({ name: tileName, x, y, row, col });
+        }
+      }
+      
+      // Генерируем JSON с координатами
+      const jsonData = {
+        tileSize,
+        spritesheet: {
+          width: currentImage.width,
+          height: currentImage.height,
+          cols,
+          rows,
+        },
+        tiles: tileMap,
+        typescript: Object.entries(tileMap)
+          .map(([key, [x, y]]) => `  ${key}: [${x}, ${y}],`)
+          .join('\n'),
+      };
+      
+      zip.file('tilemap.json', JSON.stringify(jsonData, null, 2));
+      
+      // Генерируем TypeScript код для pixelholeMap.ts
+      const tsCode = `// Auto-generated tile mapping
+export const TILEMAP: Record<string, [number, number]> = {
+${Object.entries(tileMap)
+  .map(([key, [x, y]]) => `  ${key}: [${x}, ${y}],`)
+  .join('\n')}
+};`;
+      
+      zip.file('tilemap.ts', tsCode);
+      
+      // Показываем результат
+      output.style.display = 'block';
+      output.textContent = `✓ Нарезано ${tiles.length} тайлов\n\nКоординаты для pixelholeMap.ts:\n\n${tsCode}`;
+      
+      // Сохраняем ZIP для скачивания
+      const blob = await zip.generateAsync({ type: 'blob' });
+      const url = URL.createObjectURL(blob);
+      downloadBtn.style.display = 'block';
+      downloadBtn.onclick = () => {
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${prefix}_tiles.zip`;
+        a.click();
+      };
+      
+      sliceBtn.disabled = false;
+      sliceBtn.textContent = 'Нарезать спрайты';
+    });
+  </script>
+</body>
+</html>

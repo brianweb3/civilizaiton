@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interactive Sprite Slicer - NOCRACY</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #F4F1E8;
+      color: #2C2416;
+      padding: 20px;
+    }
+    
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 8px;
+      padding: 30px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    
+    h1 {
+      margin-bottom: 10px;
+      color: #2A74B8;
+    }
+    
+    .subtitle {
+      color: #666;
+      margin-bottom: 30px;
+    }
+    
+    .section {
+      margin-bottom: 30px;
+      padding: 20px;
+      background: #FAF9F6;
+      border-radius: 6px;
+      border: 1px solid #E5E0D6;
+    }
+    
+    .section h2 {
+      font-size: 18px;
+      margin-bottom: 15px;
+      color: #2C2416;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: #2C2416;
+    }
+    
+    input[type="file"],
+    input[type="text"],
+    input[type="number"] {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #D4C5B0;
+      border-radius: 4px;
+      font-size: 14px;
+      background: white;
+    }
+    
+    .controls {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      margin-bottom: 15px;
+    }
+    
+    button {
+      background: #2A74B8;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 4px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    
+    button:hover {
+      background: #1E5A8A;
+    }
+    
+    button:disabled {
+      background: #CCC;
+      cursor: not-allowed;
+    }
+    
+    .btn-danger {
+      background: #B42318;
+    }
+    
+    .btn-danger:hover {
+      background: #8B1E15;
+    }
+    
+    .btn-success {
+      background: #2E8B57;
+    }
+    
+    .btn-success:hover {
+      background: #246B44;
+    }
+    
+    .canvas-container {
+      position: relative;
+      display: inline-block;
+      border: 2px solid #D4C5B0;
+      border-radius: 4px;
+      background: #E5E0D6;
+      overflow: auto;
+      max-width: 100%;
+    }
+    
+    #spriteCanvas {
+      display: block;
+      cursor: crosshair;
+      image-rendering: pixelated;
+      image-rendering: -moz-crisp-edges;
+      image-rendering: crisp-edges;
+    }
+    
+    .selection {
+      position: absolute;
+      border: 2px solid #2A74B8;
+      background: rgba(42, 116, 184, 0.1);
+      pointer-events: none;
+    }
+    
+    .selection.active {
+      border-color: #B42318;
+      background: rgba(180, 35, 24, 0.1);
+    }
+    
+    .selection-label {
+      position: absolute;
+      top: -20px;
+      left: 0;
+      background: #2A74B8;
+      color: white;
+      padding: 2px 6px;
+      font-size: 11px;
+      border-radius: 3px;
+      white-space: nowrap;
+    }
+    
+    .selection.active .selection-label {
+      background: #B42318;
+    }
+    
+    .sprites-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: 15px;
+      margin-top: 20px;
+      max-height: 400px;
+      overflow-y: auto;
+      padding: 10px;
+      background: white;
+      border-radius: 4px;
+    }
+    
+    .sprite-item {
+      position: relative;
+      border: 2px solid #D4C5B0;
+      border-radius: 4px;
+      padding: 8px;
+      background: white;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .sprite-item:hover {
+      border-color: #2A74B8;
+      transform: scale(1.05);
+    }
+    
+    .sprite-item.selected {
+      border-color: #B42318;
+      background: #FFF5F5;
+    }
+    
+    .sprite-item canvas {
+      width: 100%;
+      height: auto;
+      image-rendering: pixelated;
+      display: block;
+    }
+    
+    .sprite-item .name {
+      margin-top: 5px;
+      font-size: 11px;
+      text-align: center;
+      color: #666;
+      word-break: break-all;
+    }
+    
+    .sprite-item .coords {
+      font-size: 9px;
+      color: #999;
+      text-align: center;
+      margin-top: 2px;
+    }
+    
+    .info {
+      margin-top: 10px;
+      padding: 10px;
+      background: #E8F4F8;
+      border-left: 3px solid #2A74B8;
+      border-radius: 4px;
+      font-size: 13px;
+    }
+    
+    .output {
+      margin-top: 20px;
+      padding: 15px;
+      background: #2C2416;
+      color: #F4F1E8;
+      border-radius: 4px;
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+      max-height: 300px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+    
+    .toolbar {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 15px;
+    }
+    
+    .zoom-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+    
+    .zoom-controls input[type="range"] {
+      width: 200px;
+      cursor: pointer;
+    }
+    
+    .zoom-controls button {
+      padding: 8px 16px;
+      font-size: 13px;
+    }
+    
+    .zoom-value {
+      min-width: 60px;
+      text-align: center;
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎨 Interactive Sprite Slicer</h1>
+    <p class="subtitle">Кликайте и перетаскивайте для выбора областей спрайтов</p>
+    
+    <div class="section">
+      <h2>1. Загрузите спрайт-лист</h2>
+      <input type="file" id="fileInput" accept="image/png,image/jpeg" />
+      <div id="fileInfo" class="info" style="display: none;"></div>
+    </div>
+    
+    <div class="section" id="editorSection" style="display: none;">
+      <h2>2. Выберите области спрайтов</h2>
+      
+      <div class="toolbar">
+        <button id="clearBtn" class="btn-danger">Очистить все</button>
+        <button id="deleteSelectedBtn" class="btn-danger" disabled>Удалить выбранные</button>
+        <button id="exportBtn" class="btn-success">Экспортировать</button>
+      </div>
+      
+      <div class="zoom-controls">
+        <label>Масштаб:</label>
+        <input type="range" id="zoomSlider" min="0.1" max="5" value="1" step="0.1" />
+        <span class="zoom-value" id="zoomValue">100%</span>
+        <button id="fitBtn">Подогнать</button>
+        <button id="zoomInBtn">+</button>
+        <button id="zoomOutBtn">-</button>
+      </div>
+      
+      <div class="canvas-container" id="canvasContainer">
+        <canvas id="spriteCanvas"></canvas>
+        <div id="selections"></div>
+      </div>
+      
+      <div class="info">
+        <strong>Инструкция:</strong><br>
+        • Зажмите левую кнопку мыши и перетащите для выбора области<br>
+        • Кликните на выбранной области для редактирования<br>
+        • Перетащите углы или края для изменения размера<br>
+        • Двойной клик для переименования спрайта<br>
+        • Удаление: выберите и нажмите Delete или кнопку "Удалить выбранные"
+      </div>
+    </div>
+    
+    <div class="section" id="spritesSection" style="display: none;">
+      <h2>3. Выбранные спрайты (<span id="spriteCount">0</span>)</h2>
+      <div class="sprites-list" id="spritesList"></div>
+    </div>
+    
+    <div class="section" id="exportSection" style="display: none;">
+      <h2>4. Экспорт</h2>
+      <div class="controls">
+        <div>
+          <label for="exportPrefix">Префикс имен файлов:</label>
+          <input type="text" id="exportPrefix" value="sprite" />
+        </div>
+      </div>
+      <button id="downloadBtn" class="btn-success">Скачать ZIP архив</button>
+      <div id="output" class="output" style="display: none;"></div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script>
+    const fileInput = document.getElementById('fileInput');
+    const spriteCanvas = document.getElementById('spriteCanvas');
+    const canvasContainer = document.getElementById('canvasContainer');
+    const selectionsDiv = document.getElementById('selections');
+    const editorSection = document.getElementById('editorSection');
+    const spritesSection = document.getElementById('spritesSection');
+    const exportSection = document.getElementById('exportSection');
+    const spritesList = document.getElementById('spritesList');
+    const spriteCount = document.getElementById('spriteCount');
+    const clearBtn = document.getElementById('clearBtn');
+    const deleteSelectedBtn = document.getElementById('deleteSelectedBtn');
+    const exportBtn = document.getElementById('exportBtn');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const zoomSlider = document.getElementById('zoomSlider');
+    const zoomValue = document.getElementById('zoomValue');
+    const fitBtn = document.getElementById('fitBtn');
+    const zoomInBtn = document.getElementById('zoomInBtn');
+    const zoomOutBtn = document.getElementById('zoomOutBtn');
+    const exportPrefix = document.getElementById('exportPrefix');
+    const output = document.getElementById('output');
+    const fileInfo = document.getElementById('fileInfo');
+    
+    let originalImage = null;
+    let ctx = null;
+    let sprites = [];
+    let selectedSprites = new Set();
+    let isDrawing = false;
+    let startX = 0, startY = 0;
+    let currentSelection = null;
+    let zoom = 1;
+    let editingSprite = null;
+    
+    fileInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const img = new Image();
+        img.onload = () => {
+          originalImage = img;
+          spriteCanvas.width = img.width;
+          spriteCanvas.height = img.height;
+          ctx = spriteCanvas.getContext('2d');
+          ctx.imageSmoothingEnabled = false;
+          ctx.drawImage(img, 0, 0);
+          
+          fileInfo.style.display = 'block';
+          fileInfo.innerHTML = `
+            <strong>Файл:</strong> ${file.name}<br>
+            <strong>Размер:</strong> ${img.width} × ${img.height} пикселей
+          `;
+          
+          editorSection.style.display = 'block';
+          spritesSection.style.display = 'block';
+          exportSection.style.display = 'block';
+          initZoom();
+        };
+        img.src = event.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
+    
+    function updateCanvasSize() {
+      if (!originalImage) return;
+      
+      // Применяем масштаб напрямую
+      const displayWidth = originalImage.width * zoom;
+      const displayHeight = originalImage.height * zoom;
+      
+      spriteCanvas.style.width = displayWidth + 'px';
+      spriteCanvas.style.height = displayHeight + 'px';
+      
+      // Перерисовываем изображение на canvas с учетом масштаба
+      ctx.clearRect(0, 0, spriteCanvas.width, spriteCanvas.height);
+      ctx.save();
+      ctx.scale(zoom, zoom);
+      ctx.drawImage(originalImage, 0, 0);
+      ctx.restore();
+      
+      updateSelections();
+    }
+    
+    function getCanvasScale() {
+      if (!originalImage) return 1;
+      // Возвращаем масштаб отображения (CSS размер / реальный размер)
+      const displayWidth = parseFloat(spriteCanvas.style.width) || spriteCanvas.width;
+      return displayWidth / originalImage.width;
+    }
+    
+    zoomSlider.addEventListener('input', (e) => {
+      zoom = parseFloat(e.target.value);
+      zoomValue.textContent = Math.round(zoom * 100) + '%';
+      updateCanvasSize();
+    });
+    
+    zoomInBtn.addEventListener('click', () => {
+      zoom = Math.min(parseFloat(zoomSlider.max), zoom + 0.1);
+      zoomSlider.value = zoom;
+      zoomValue.textContent = Math.round(zoom * 100) + '%';
+      updateCanvasSize();
+    });
+    
+    zoomOutBtn.addEventListener('click', () => {
+      zoom = Math.max(parseFloat(zoomSlider.min), zoom - 0.1);
+      zoomSlider.value = zoom;
+      zoomValue.textContent = Math.round(zoom * 100) + '%';
+      updateCanvasSize();
+    });
+    
+    fitBtn.addEventListener('click', () => {
+      if (!originalImage) return;
+      const containerWidth = canvasContainer.clientWidth - 20;
+      const fitZoom = Math.min(containerWidth / originalImage.width, 1);
+      zoom = fitZoom;
+      zoomSlider.value = zoom;
+      zoomValue.textContent = Math.round(zoom * 100) + '%';
+      updateCanvasSize();
+    });
+    
+    // Инициализация масштаба при загрузке изображения
+    function initZoom() {
+      if (!originalImage) return;
+      const containerWidth = canvasContainer.clientWidth - 20;
+      const initialZoom = Math.min(containerWidth / originalImage.width, 1);
+      zoom = initialZoom;
+      zoomSlider.value = zoom;
+      zoomValue.textContent = Math.round(zoom * 100) + '%';
+      updateCanvasSize();
+    }
+    
+    spriteCanvas.addEventListener('mousedown', (e) => {
+      if (!originalImage) return;
+      
+      const rect = spriteCanvas.getBoundingClientRect();
+      const displayScale = getCanvasScale();
+      const x = Math.floor((e.clientX - rect.left) / displayScale);
+      const y = Math.floor((e.clientY - rect.top) / displayScale);
+      
+      // Проверяем, кликнули ли на существующий спрайт
+      const clickedSprite = sprites.find(s => 
+        x >= s.x && x < s.x + s.w && y >= s.y && y < s.y + s.h
+      );
+      
+      if (clickedSprite) {
+        // Выбираем спрайт
+        if (e.shiftKey) {
+          if (selectedSprites.has(clickedSprite.id)) {
+            selectedSprites.delete(clickedSprite.id);
+          } else {
+            selectedSprites.add(clickedSprite.id);
+          }
+        } else {
+          selectedSprites.clear();
+          selectedSprites.add(clickedSprite.id);
+        }
+        updateSpritesList();
+        updateSelections();
+        return;
+      }
+      
+      // Начинаем новое выделение
+      isDrawing = true;
+      startX = x;
+      startY = y;
+      currentSelection = { x, y, w: 0, h: 0 };
+      selectedSprites.clear();
+      updateSelections();
+    });
+    
+    spriteCanvas.addEventListener('mousemove', (e) => {
+      if (!isDrawing || !currentSelection) return;
+      
+      const rect = spriteCanvas.getBoundingClientRect();
+      const displayScale = getCanvasScale();
+      const x = Math.floor((e.clientX - rect.left) / displayScale);
+      const y = Math.floor((e.clientY - rect.top) / displayScale);
+      
+      currentSelection.w = x - startX;
+      currentSelection.h = y - startY;
+      updateSelections();
+    });
+    
+    spriteCanvas.addEventListener('mouseup', (e) => {
+      if (!isDrawing || !currentSelection) return;
+      
+      const w = Math.abs(currentSelection.w);
+      const h = Math.abs(currentSelection.h);
+      const x = currentSelection.w < 0 ? startX + currentSelection.w : startX;
+      const y = currentSelection.h < 0 ? startY + currentSelection.h : startY;
+      
+      if (w > 0 && h > 0) {
+        const sprite = {
+          id: Date.now() + Math.random(),
+          name: `sprite_${sprites.length + 1}`,
+          x: x,
+          y: y,
+          w: w,
+          h: h,
+        };
+        sprites.push(sprite);
+        selectedSprites.clear();
+        selectedSprites.add(sprite.id);
+        updateSpritesList();
+      }
+      
+      isDrawing = false;
+      currentSelection = null;
+      updateSelections();
+    });
+    
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Delete' && selectedSprites.size > 0) {
+        deleteSelected();
+      }
+    });
+    
+    function updateSelections() {
+      selectionsDiv.innerHTML = '';
+      
+      if (!originalImage) return;
+      const displayScale = getCanvasScale();
+      
+      // Показываем текущее выделение
+      if (currentSelection) {
+        const w = Math.abs(currentSelection.w);
+        const h = Math.abs(currentSelection.h);
+        const x = currentSelection.w < 0 ? startX + currentSelection.w : startX;
+        const y = currentSelection.h < 0 ? startY + currentSelection.h : startY;
+        
+        const div = document.createElement('div');
+        div.className = 'selection';
+        div.style.left = (x * displayScale) + 'px';
+        div.style.top = (y * displayScale) + 'px';
+        div.style.width = (w * displayScale) + 'px';
+        div.style.height = (h * displayScale) + 'px';
+        selectionsDiv.appendChild(div);
+      }
+      
+      // Показываем сохраненные спрайты
+      sprites.forEach(sprite => {
+        const div = document.createElement('div');
+        div.className = 'selection' + (selectedSprites.has(sprite.id) ? ' active' : '');
+        div.style.left = (sprite.x * displayScale) + 'px';
+        div.style.top = (sprite.y * displayScale) + 'px';
+        div.style.width = (sprite.w * displayScale) + 'px';
+        div.style.height = (sprite.h * displayScale) + 'px';
+        
+        const label = document.createElement('div');
+        label.className = 'selection-label';
+        label.textContent = sprite.name;
+        div.appendChild(label);
+        
+        selectionsDiv.appendChild(div);
+      });
+    }
+    
+    function updateSpritesList() {
+      spritesList.innerHTML = '';
+      spriteCount.textContent = sprites.length;
+      deleteSelectedBtn.disabled = selectedSprites.size === 0;
+      
+      sprites.forEach(sprite => {
+        const item = document.createElement('div');
+        item.className = 'sprite-item' + (selectedSprites.has(sprite.id) ? ' selected' : '');
+        
+        const canvas = document.createElement('canvas');
+        canvas.width = sprite.w;
+        canvas.height = sprite.h;
+        const ctx2 = canvas.getContext('2d');
+        ctx2.imageSmoothingEnabled = false;
+        ctx2.drawImage(
+          originalImage,
+          sprite.x, sprite.y, sprite.w, sprite.h,
+          0, 0, sprite.w, sprite.h
+        );
+        
+        const nameDiv = document.createElement('div');
+        nameDiv.className = 'name';
+        nameDiv.textContent = sprite.name;
+        nameDiv.contentEditable = true;
+        nameDiv.addEventListener('blur', () => {
+          sprite.name = nameDiv.textContent.trim() || `sprite_${sprite.id}`;
+        });
+        
+        const coordsDiv = document.createElement('div');
+        coordsDiv.className = 'coords';
+        coordsDiv.textContent = `${sprite.w}×${sprite.h} @ (${sprite.x},${sprite.y})`;
+        
+        item.appendChild(canvas);
+        item.appendChild(nameDiv);
+        item.appendChild(coordsDiv);
+        
+        item.addEventListener('click', (e) => {
+          if (e.shiftKey) {
+            if (selectedSprites.has(sprite.id)) {
+              selectedSprites.delete(sprite.id);
+            } else {
+              selectedSprites.add(sprite.id);
+            }
+          } else {
+            selectedSprites.clear();
+            selectedSprites.add(sprite.id);
+          }
+          updateSpritesList();
+          updateSelections();
+        });
+        
+        item.addEventListener('dblclick', () => {
+          nameDiv.focus();
+          const range = document.createRange();
+          range.selectNodeContents(nameDiv);
+          const sel = window.getSelection();
+          sel.removeAllRanges();
+          sel.addRange(range);
+        });
+        
+        spritesList.appendChild(item);
+      });
+    }
+    
+    clearBtn.addEventListener('click', () => {
+      if (confirm('Удалить все спрайты?')) {
+        sprites = [];
+        selectedSprites.clear();
+        updateSpritesList();
+        updateSelections();
+      }
+    });
+    
+    deleteSelectedBtn.addEventListener('click', deleteSelected);
+    
+    function deleteSelected() {
+      if (selectedSprites.size === 0) return;
+      sprites = sprites.filter(s => !selectedSprites.has(s.id));
+      selectedSprites.clear();
+      updateSpritesList();
+      updateSelections();
+    }
+    
+    exportBtn.addEventListener('click', () => {
+      exportSection.scrollIntoView({ behavior: 'smooth' });
+    });
+    
+    downloadBtn.addEventListener('click', async () => {
+      if (sprites.length === 0) {
+        alert('Нет спрайтов для экспорта!');
+        return;
+      }
+      
+      downloadBtn.disabled = true;
+      downloadBtn.textContent = 'Генерирую...';
+      
+      const prefix = exportPrefix.value || 'sprite';
+      const zip = new JSZip();
+      const tileMap = {};
+      
+      // Нарезаем каждый спрайт
+      for (let i = 0; i < sprites.length; i++) {
+        const sprite = sprites[i];
+        const canvas = document.createElement('canvas');
+        canvas.width = sprite.w;
+        canvas.height = sprite.h;
+        const ctx2 = canvas.getContext('2d');
+        ctx2.imageSmoothingEnabled = false;
+        ctx2.drawImage(
+          originalImage,
+          sprite.x, sprite.y, sprite.w, sprite.h,
+          0, 0, sprite.w, sprite.h
+        );
+        
+        const fileName = `${prefix}_${i}_${sprite.name}.png`;
+        const dataUrl = canvas.toDataURL('image/png');
+        const base64 = dataUrl.split(',')[1];
+        zip.file(fileName, base64, { base64: true });
+        
+        const key = sprite.name;
+        tileMap[key] = [sprite.x, sprite.y, sprite.w, sprite.h];
+      }
+      
+      // Генерируем JSON
+      const jsonData = {
+        spritesheet: {
+          width: originalImage.width,
+          height: originalImage.height,
+        },
+        sprites: tileMap,
+        typescript: Object.entries(tileMap)
+          .map(([key, [x, y, w, h]]) => `  ${key}: [${x}, ${y}, ${w}, ${h}],`)
+          .join('\n'),
+      };
+      
+      zip.file('tilemap.json', JSON.stringify(jsonData, null, 2));
+      
+      // Генерируем TypeScript код
+      const tsCode = `// Auto-generated sprite mapping
+export const SPRITEMAP: Record<string, [number, number, number, number]> = {
+${Object.entries(tileMap)
+  .map(([key, [x, y, w, h]]) => `  ${key}: [${x}, ${y}, ${w}, ${h}],`)
+  .join('\n')}
+};`;
+      
+      zip.file('spritemap.ts', tsCode);
+      
+      // Показываем результат
+      output.style.display = 'block';
+      output.textContent = `✓ Экспортировано ${sprites.length} спрайтов\n\nTypeScript код:\n\n${tsCode}`;
+      
+      // Скачиваем ZIP
+      const blob = await zip.generateAsync({ type: 'blob' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${prefix}_sprites.zip`;
+      a.click();
+      
+      downloadBtn.disabled = false;
+      downloadBtn.textContent = 'Скачать ZIP архив';
+    });
+    
+    window.addEventListener('resize', updateCanvasSize);
+  </script>
+</body>
+</html>

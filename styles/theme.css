@@ -1,0 +1,73 @@
+/* NOCRACY "CIVILIZATION DAYLIGHT" THEME
+   Central design tokens for the bright, atlas-inspired UI.
+   These variables are consumed by global styles and Tailwind utility classes
+   via CSS variable references (e.g. bg-[var(--bg)]). */
+
+:root {
+  /* Base surfaces */
+  --bg: #F4F1E8;            /* parchment */
+  --bg2: #E9E2D0;           /* warm sand */
+  --panel: #FFFFFF;         /* paper */
+  --panel2: #F9F6EE;        /* soft paper */
+  --border: rgba(40, 30, 20, 0.18);
+
+  /* Text */
+  --text: #1F2328;          /* near-black */
+  --muted: rgba(31, 35, 40, 0.65);
+  --muted-soft: rgba(31, 35, 40, 0.45);
+
+  /* Map / nature accents */
+  --grass: #4E8C4A;
+  --forest: #2F6B3A;
+  --water: #2A74B8;
+  --deepwater: #1E4E7A;
+  --desert: #D9B56C;
+  --mountain: #8A8F98;
+
+  /* System accents */
+  --economy: #2E8B57;       /* emerald */
+  --research: #2A74B8;      /* blue */
+  --laws: #7A4E2D;          /* bronze/wood */
+  --ethics: #7C3AED;        /* violet */
+  --alerts: #C2410C;        /* burnt orange */
+  --critical: #B42318;      /* deep red */
+
+  /* Status aliases */
+  --status-ok: var(--economy);
+  --status-warn: var(--alerts);
+  --status-crit: var(--critical);
+
+  /* Legacy aliases (to keep existing components working) */
+  --bg-primary: var(--bg);
+  --bg-secondary: var(--bg2);
+  --bg-tertiary: var(--panel2);
+
+  --text-primary: var(--text);
+  --text-secondary: var(--muted);
+  --text-muted: var(--muted-soft);
+
+  --accent-cyan: var(--research);
+  --accent-magenta: var(--ethics);
+  --accent-red: var(--alerts);
+
+  --grid-line: var(--border);
+  --grid-active: rgba(40, 30, 20, 0.35);
+
+  --status-active: var(--status-ok);
+  --status-warning: var(--status-warn);
+  --status-critical: var(--status-crit);
+  --status-inactive: rgba(148, 163, 184, 0.9);
+
+  /* Typography */
+  --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+@theme inline {
+  /* Wire base Tailwind colors to theme tokens */
+  --color-background: var(--bg);
+  --color-foreground: var(--text);
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+}
+
