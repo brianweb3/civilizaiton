@@ -79,9 +79,15 @@ function generateRandomMessage() {
   return message;
 }
 
-export async function GET() {
+// Send multiple random messages (for manual trigger)
+export async function GET(request: Request) {
   try {
-    const message = generateRandomMessage();
+    const url = new URL(request.url);
+    const count = parseInt(url.searchParams.get('count') || '1', 10);
+    const results = [];
+
+    for (let i = 0; i < Math.min(count, 10); i++) {
+      const message = generateRandomMessage();
     
     const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
     
@@ -98,19 +104,25 @@ export async function GET() {
       }),
     });
 
-    const result = await response.json();
-    
-    if (!response.ok) {
-      return NextResponse.json({ 
-        error: 'Failed to send message',
-        details: result 
-      }, { status: 500 });
+      const result = await response.json();
+      
+      if (!response.ok) {
+        results.push({ error: 'Failed to send message', details: result });
+        continue;
+      }
+
+      results.push({ success: true, result });
+      
+      // Small delay between messages
+      if (i < count - 1) {
+        await new Promise(resolve => setTimeout(resolve, 1000));
+      }
     }
 
     return NextResponse.json({ 
       success: true,
-      message: 'Random message sent to Telegram',
-      result 
+      message: `Sent ${results.filter(r => r.success).length} message(s) to Telegram`,
+      results 
     });
   } catch (error) {
     return NextResponse.json({ 
