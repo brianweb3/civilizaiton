@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import { useNocracyStore } from "@/store/simulation";
 import { playTypingSound } from "@/lib/sounds";
 
+const WALLET_ADDRESS = "CA 8StW1wSVWwJLcH15h5Ja46DVNsbffdwaZufWXZdGpump";
+
 // Component for letter-by-letter animation
 function TypingText({ 
   text, 
@@ -70,6 +72,17 @@ export default function Home() {
   const { manifestAccepted, acceptManifest } = useNocracyStore();
   const [mounted, setMounted] = useState(false);
   const [showButton, setShowButton] = useState(false);
+  const [copied, setCopied] = useState(false);
+
+  const handleCopyWallet = async () => {
+    try {
+      await navigator.clipboard.writeText(WALLET_ADDRESS);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      console.error('Failed to copy:', err);
+    }
+  };
 
   useEffect(() => {
     setMounted(true);
@@ -143,6 +156,24 @@ export default function Home() {
             </div>
           )}
           
+          {/* Wallet Address */}
+          {showButton && (
+            <div className="text-center mb-6 animate-fade-in">
+              <div 
+                onClick={handleCopyWallet}
+                className="inline-flex items-center gap-2 px-4 py-2 text-xs border border-[var(--muted)] text-[var(--muted)] hover:border-[var(--text)] hover:text-[var(--text)] transition-all duration-200 cursor-pointer font-mono"
+                title="Click to copy"
+              >
+                <span>{WALLET_ADDRESS}</span>
+                {copied ? (
+                  <span className="text-[var(--status-active)]">✓ Copied</span>
+                ) : (
+                  <span className="opacity-50">📋</span>
+                )}
+              </div>
+            </div>
+          )}
+
           {/* Accept Button */}
           {showButton && (
             <div className="text-center animate-fade-in">
