@@ -425,9 +425,9 @@ export default function TopDownMapPixi({
         
         // Debug overlay
         if (debugMode && hoveredTile) {
-          const debugText = new Text({
-            text: `Tile: (${hoveredTile.x}, ${hoveredTile.y})\nTerrain: ${getTerrainType(hoveredTile.x, hoveredTile.y)}\nSprite: ${getTileKey(getTerrainType(hoveredTile.x, hoveredTile.y), hoveredTile.x, hoveredTile.y)}`,
-            style: {
+          const debugText = new Text(
+            `Tile: (${hoveredTile.x}, ${hoveredTile.y})\nTerrain: ${getTerrainType(hoveredTile.x, hoveredTile.y)}\nSprite: ${getTileKey(getTerrainType(hoveredTile.x, hoveredTile.y), hoveredTile.x, hoveredTile.y)}`,
+            {
               fontSize: 12,
               fill: 0x000000,
               backgroundColor: 0xFFFFFF,
