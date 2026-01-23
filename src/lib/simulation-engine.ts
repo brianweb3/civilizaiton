@@ -1120,6 +1120,7 @@ export class SimulationEngine {
         ));
         
         // Send to Telegram
+        console.log('[Simulation] Law created, sending to Telegram:', law.title);
         const activeAgentsCount = this.agents.filter(a => a.status === 'ACTIVE').length;
         sendTelegramMessage(formatLawCreated(law, {
           population: activeAgentsCount,
@@ -1128,7 +1129,9 @@ export class SimulationEngine {
             currencySupply: this.economy.currencySupply,
             inequalityIndex: this.economy.inequalityIndex,
           },
-        })).catch(() => {});
+        })).catch((err) => {
+          console.error('[Simulation] Failed to send law creation to Telegram:', err);
+        });
       }
     }
     

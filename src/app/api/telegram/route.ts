@@ -8,8 +8,12 @@ export async function POST(request: NextRequest) {
     const { message, parseMode = 'HTML' } = await request.json();
 
     if (!message) {
+      console.error('[Telegram API] No message provided');
       return NextResponse.json({ error: 'Message is required' }, { status: 400 });
     }
+
+    console.log('[Telegram API] Sending message to Telegram:', message.substring(0, 50) + '...');
+    console.log('[Telegram API] Chat ID:', TELEGRAM_CHAT_ID);
 
     const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
     
@@ -26,16 +30,20 @@ export async function POST(request: NextRequest) {
       }),
     });
 
+    const responseText = await response.text();
+    console.log('[Telegram API] Response status:', response.status);
+    console.log('[Telegram API] Response:', responseText);
+
     if (!response.ok) {
-      const error = await response.text();
-      console.error('Telegram API error:', error);
-      return NextResponse.json({ error: 'Failed to send message' }, { status: 500 });
+      console.error('[Telegram API] Error response:', responseText);
+      return NextResponse.json({ error: 'Failed to send message', details: responseText }, { status: 500 });
     }
 
-    const data = await response.json();
+    const data = JSON.parse(responseText);
+    console.log('[Telegram API] Success:', data);
     return NextResponse.json({ success: true, data });
   } catch (error) {
-    console.error('Failed to send Telegram message:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    console.error('[Telegram API] Exception:', error);
+    return NextResponse.json({ error: 'Internal server error', details: String(error) }, { status: 500 });
   }
 }

@@ -35,6 +35,8 @@ function formatStatsFooter(stats: StatsData): string {
 // Send message to Telegram channel via API route
 export async function sendTelegramMessage(message: string, parseMode: 'HTML' | 'Markdown' = 'HTML'): Promise<void> {
   try {
+    console.log('[Telegram] Attempting to send message:', message.substring(0, 50) + '...');
+    
     // Use Next.js API route to avoid CORS issues
     const response = await fetch('/api/telegram', {
       method: 'POST',
@@ -49,10 +51,13 @@ export async function sendTelegramMessage(message: string, parseMode: 'HTML' | '
 
     if (!response.ok) {
       const error = await response.json();
-      console.error('Telegram API error:', error);
+      console.error('[Telegram] API error:', error);
+    } else {
+      const data = await response.json();
+      console.log('[Telegram] Message sent successfully:', data);
     }
   } catch (error) {
-    console.error('Failed to send Telegram message:', error);
+    console.error('[Telegram] Failed to send message:', error);
     // Silently fail - don't break simulation if Telegram is down
   }
 }
