@@ -62,10 +62,12 @@ function generateRandomMessage() {
     message += `<i>Breakthrough in autonomous decision-making systems.</i>\n\n`;
     message += `💭 A breakthrough has been achieved!\n\n`;
   } else if (msg.type === 'economy') {
-    message += `<b>${msg.content}</b>\n📊 Impact: <code>${msg.impact > 0 ? '+' : ''}${msg.impact}%</code>\n\n`;
+    const impact = 'impact' in msg ? parseFloat(msg.impact as string) : 0;
+    message += `<b>${msg.content}</b>\n📊 Impact: <code>${impact > 0 ? '+' : ''}${impact}%</code>\n\n`;
     message += `💭 The economy is thriving!\n\n`;
   } else if (msg.type === 'population') {
-    message += `<b>${msg.content}</b>\n<b>+${msg.births}</b> new births this cycle\n\n`;
+    const births = 'births' in msg ? (msg.births as number) : 0;
+    message += `<b>${msg.content}</b>\n<b>+${births}</b> new births this cycle\n\n`;
     message += `💭 New citizens join the civilization!\n\n`;
   }
 
