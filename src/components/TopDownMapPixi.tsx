@@ -430,8 +430,8 @@ export default function TopDownMapPixi({
             {
               fontSize: 12,
               fill: 0x000000,
-            }
-          });
+            },
+          );
           debugText.x = hoveredTile.x * TILE_SIZE * currentCamera.zoom + currentCamera.x;
           debugText.y = hoveredTile.y * TILE_SIZE * currentCamera.zoom + currentCamera.y - 40;
           debugLayer.addChild(debugText);
