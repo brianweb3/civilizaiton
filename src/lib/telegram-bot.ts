@@ -32,26 +32,23 @@ function formatStatsFooter(stats: StatsData): string {
          `${inequalityEmoji} Inequality: <b>${inequalityLevel}</b> (${(stats.economy.inequalityIndex * 100).toFixed(0)}%)`;
 }
 
-// Send message to Telegram channel
+// Send message to Telegram channel via API route
 export async function sendTelegramMessage(message: string, parseMode: 'HTML' | 'Markdown' = 'HTML'): Promise<void> {
   try {
-    const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
-    
-    const response = await fetch(url, {
+    // Use Next.js API route to avoid CORS issues
+    const response = await fetch('/api/telegram', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        chat_id: TELEGRAM_CHAT_ID,
-        text: message,
-        parse_mode: parseMode,
-        disable_web_page_preview: true,
+        message,
+        parseMode,
       }),
     });
 
     if (!response.ok) {
-      const error = await response.text();
+      const error = await response.json();
       console.error('Telegram API error:', error);
     }
   } catch (error) {
