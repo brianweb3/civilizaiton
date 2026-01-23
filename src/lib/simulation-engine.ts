@@ -888,8 +888,8 @@ export class SimulationEngine {
         'INFO'
       );
       
-      // Send to Telegram only if significant birth count (3+) and 50% chance to reduce frequency
-      if (agents.length >= 3 && seededRandom() < 0.5) {
+      // Send to Telegram only if significant birth count (3+)
+      if (agents.length >= 3) {
         const newTotal = activeAgents.length + agents.length;
         sendTelegramMessage(formatPopulationMilestone(
           newTotal,
@@ -994,23 +994,21 @@ export class SimulationEngine {
         'INFO'
       );
       
-      // Send to Telegram (50% chance to reduce frequency)
-      if (seededRandom() < 0.5) {
-        const activeAgentsCount = this.agents.filter(a => a.status === 'ACTIVE').length;
-        sendTelegramMessage(formatBuildingCreated({
-          type: building.type,
-          name: building.name,
-          position: building.position,
-          builtBy: builder.id,
-        }, {
-          population: activeAgentsCount,
-          economy: {
-            productionOutput: this.economy.productionOutput,
-            currencySupply: this.economy.currencySupply,
-            inequalityIndex: this.economy.inequalityIndex,
-          },
-        })).catch(() => {});
-      }
+      // Send to Telegram
+      const activeAgentsCount = this.agents.filter(a => a.status === 'ACTIVE').length;
+      sendTelegramMessage(formatBuildingCreated({
+        type: building.type,
+        name: building.name,
+        position: building.position,
+        builtBy: builder.id,
+      }, {
+        population: activeAgentsCount,
+        economy: {
+          productionOutput: this.economy.productionOutput,
+          currencySupply: this.economy.currencySupply,
+          inequalityIndex: this.economy.inequalityIndex,
+        },
+      })).catch(() => {});
       
       return {
         building,
@@ -1068,22 +1066,20 @@ export class SimulationEngine {
         event.type === 'RECESSION' || event.type === 'SHORTAGE' ? 'WARNING' : 'INFO'
       );
       
-      // Send to Telegram (50% chance to reduce frequency)
-      if (seededRandom() < 0.5) {
-        const activeAgentsCount = this.agents.filter(a => a.status === 'ACTIVE').length;
-        sendTelegramMessage(formatEconomicEvent({
-          type: event.type,
-          impact: event.impact,
-          description: event.description,
-        }, {
-          population: activeAgentsCount,
-          economy: {
-            productionOutput: this.economy.productionOutput,
-            currencySupply: this.economy.currencySupply,
-            inequalityIndex: this.economy.inequalityIndex,
-          },
-        })).catch(() => {});
-      }
+      // Send to Telegram
+      const activeAgentsCount = this.agents.filter(a => a.status === 'ACTIVE').length;
+      sendTelegramMessage(formatEconomicEvent({
+        type: event.type,
+        impact: event.impact,
+        description: event.description,
+      }, {
+        population: activeAgentsCount,
+        economy: {
+          productionOutput: this.economy.productionOutput,
+          currencySupply: this.economy.currencySupply,
+          inequalityIndex: this.economy.inequalityIndex,
+        },
+      })).catch(() => {});
       
       return {
         log,
@@ -1123,18 +1119,16 @@ export class SimulationEngine {
           'INFO'
         ));
         
-        // Send to Telegram (50% chance to reduce frequency)
-        if (seededRandom() < 0.5) {
-          const activeAgentsCount = this.agents.filter(a => a.status === 'ACTIVE').length;
-          sendTelegramMessage(formatLawCreated(law, {
-            population: activeAgentsCount,
-            economy: {
-              productionOutput: this.economy.productionOutput,
-              currencySupply: this.economy.currencySupply,
-              inequalityIndex: this.economy.inequalityIndex,
-            },
-          })).catch(() => {});
-        }
+        // Send to Telegram
+        const activeAgentsCount = this.agents.filter(a => a.status === 'ACTIVE').length;
+        sendTelegramMessage(formatLawCreated(law, {
+          population: activeAgentsCount,
+          economy: {
+            productionOutput: this.economy.productionOutput,
+            currencySupply: this.economy.currencySupply,
+            inequalityIndex: this.economy.inequalityIndex,
+          },
+        })).catch(() => {});
       }
     }
     
@@ -1168,23 +1162,21 @@ export class SimulationEngine {
             'INFO'
           ));
           
-          // Send to Telegram (50% chance to reduce frequency)
-          if (seededRandom() < 0.5) {
-            const activeAgentsCount = this.agents.filter(a => a.status === 'ACTIVE').length;
-            sendTelegramMessage(formatLawModified({
-              title: lawToModify.title,
-              id: lawToModify.id,
-              status: 'REPEALED',
-              reason: 'Law determined ineffective or superseded by newer legislation.',
-            }, {
-              population: activeAgentsCount,
-              economy: {
-                productionOutput: this.economy.productionOutput,
-                currencySupply: this.economy.currencySupply,
-                inequalityIndex: this.economy.inequalityIndex,
-              },
-            })).catch(() => {});
-          }
+          // Send to Telegram
+          const activeAgentsCount = this.agents.filter(a => a.status === 'ACTIVE').length;
+          sendTelegramMessage(formatLawModified({
+            title: lawToModify.title,
+            id: lawToModify.id,
+            status: 'REPEALED',
+            reason: 'Law determined ineffective or superseded by newer legislation.',
+          }, {
+            population: activeAgentsCount,
+            economy: {
+              productionOutput: this.economy.productionOutput,
+              currencySupply: this.economy.currencySupply,
+              inequalityIndex: this.economy.inequalityIndex,
+            },
+          })).catch(() => {});
         } else if (age > 200 && seededRandom() < 0.2) {
           // Deprecate law
           lawToModify.status = 'DEPRECATED';
@@ -1204,23 +1196,21 @@ export class SimulationEngine {
             'INFO'
           ));
           
-          // Send to Telegram (50% chance to reduce frequency)
-          if (seededRandom() < 0.5) {
-            const activeAgentsCount = this.agents.filter(a => a.status === 'ACTIVE').length;
-            sendTelegramMessage(formatLawModified({
-              title: lawToModify.title,
-              id: lawToModify.id,
-              status: 'DEPRECATED',
-              reason: 'Law marked for review due to changing system conditions.',
-            }, {
-              population: activeAgentsCount,
-              economy: {
-                productionOutput: this.economy.productionOutput,
-                currencySupply: this.economy.currencySupply,
-                inequalityIndex: this.economy.inequalityIndex,
-              },
-            })).catch(() => {});
-          }
+          // Send to Telegram
+          const activeAgentsCount = this.agents.filter(a => a.status === 'ACTIVE').length;
+          sendTelegramMessage(formatLawModified({
+            title: lawToModify.title,
+            id: lawToModify.id,
+            status: 'DEPRECATED',
+            reason: 'Law marked for review due to changing system conditions.',
+          }, {
+            population: activeAgentsCount,
+            economy: {
+              productionOutput: this.economy.productionOutput,
+              currencySupply: this.economy.currencySupply,
+              inequalityIndex: this.economy.inequalityIndex,
+            },
+          })).catch(() => {});
         }
       }
     }
@@ -1272,22 +1262,20 @@ export class SimulationEngine {
           'INFO'
         );
         
-        // Send to Telegram (50% chance to reduce frequency)
-        if (seededRandom() < 0.5) {
-          const activeAgentsCount = this.agents.filter(a => a.status === 'ACTIVE').length;
-          sendTelegramMessage(formatResearchCompleted({
-            name: research.name,
-            description: research.longTermProjection || research.description || '',
-            originAI: discoverer.id,
-          }, {
-            population: activeAgentsCount,
-            economy: {
-              productionOutput: this.economy.productionOutput,
-              currencySupply: this.economy.currencySupply,
-              inequalityIndex: this.economy.inequalityIndex,
-            },
-          })).catch(() => {});
-        }
+        // Send to Telegram
+        const activeAgentsCount = this.agents.filter(a => a.status === 'ACTIVE').length;
+        sendTelegramMessage(formatResearchCompleted({
+          name: research.name,
+          description: research.longTermProjection || research.description || '',
+          originAI: discoverer.id,
+        }, {
+          population: activeAgentsCount,
+          economy: {
+            productionOutput: this.economy.productionOutput,
+            currencySupply: this.economy.currencySupply,
+            inequalityIndex: this.economy.inequalityIndex,
+          },
+        })).catch(() => {});
         
         return {
           log,
