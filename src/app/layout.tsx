@@ -14,6 +14,10 @@ export const metadata: Metadata = {
   description: "A live experiment in post-human governance. A virtual territory governed entirely by AI.",
   keywords: ["AI governance", "autonomous territory", "simulation", "post-human"],
   authors: [{ name: "civilizAItion SYSTEM" }],
+  icons: {
+    icon: '/icon.png',
+    apple: '/icon.png',
+  },
 };
 
 export default function RootLayout({
