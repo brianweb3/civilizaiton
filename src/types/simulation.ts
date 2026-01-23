@@ -149,7 +149,7 @@ export interface ImpactMetrics {
 
 export interface LawHistoryEntry {
   tick: number;
-  action: 'CREATED' | 'MODIFIED' | 'REPEALED';
+  action: 'CREATED' | 'MODIFIED' | 'REPEALED' | 'DEPRECATED';
   previousState?: Partial<Law>;
   reason: string;
 }
