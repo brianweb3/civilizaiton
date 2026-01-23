@@ -1,26 +1,879 @@
 @import "tailwindcss";
+@import "../../styles/theme.css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* civilizAItion
+   Visual System: CIVILIZATION DAYLIGHT
+   Bright, atlas-inspired strategy UI.
+*/
+
+* {
+  box-sizing: border-box;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+html {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.6;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* Game-style serif font for headings */
+.font-serif {
+  font-family: 'Georgia', 'Times New Roman', serif;
+  font-weight: 600;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+/* Selection */
+::selection {
+  background: rgba(42, 116, 184, 0.18);
+  color: var(--text);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.02);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(31, 35, 40, 0.25);
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(31, 35, 40, 0.4);
+}
+
+/* Civilization-style game animations */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes blink {
+  0%, 50% {
+    opacity: 1;
+  }
+  51%, 100% {
+    opacity: 0;
+  }
+}
+
+.typing-cursor {
+  display: inline-block;
+  width: 2px;
+  margin-left: 2px;
+  background-color: currentColor;
+  animation: blink 1s infinite;
+  vertical-align: baseline;
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes glow {
+  0%, 100% {
+    box-shadow: 0 0 5px rgba(74, 222, 128, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 15px rgba(74, 222, 128, 0.6);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+@keyframes numberCount {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Game-style number transitions (slow, smooth) */
+@keyframes numberTransition {
+  from {
+    opacity: 0.5;
+    transform: translateY(-2px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-number {
+  animation: numberTransition 0.6s ease-out;
+  transition: all 0.3s ease;
+}
+
+@keyframes progressFill {
+  from {
+    width: 0;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out;
+}
+
+.animate-slide-in-left {
+  animation: slideInLeft 0.5s ease-out;
+}
+
+.animate-slide-in-right {
+  animation: slideInRight 0.5s ease-out;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.3s ease-out;
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.3s ease-out;
+}
+
+.animate-glow {
+  animation: glow 2s ease-in-out infinite;
+}
+
+.animate-shimmer {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(42, 116, 184, 0.1),
+    transparent
+  );
+  background-size: 1000px 100%;
+  animation: shimmer 2s infinite;
+}
+
+.animate-number {
+  animation: numberCount 0.3s ease-out;
+}
+
+.animate-progress {
+  animation: progressFill 0.8s ease-out;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Game-style animations */
+.game-pulse {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.game-shimmer {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(42, 116, 184, 0.15),
+    transparent
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
+
+/* Civilization-style hover effects */
+.civ-hover {
+  transition: all 0.2s ease;
+}
+
+.civ-hover:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Links */
+a {
+  color: var(--research);
+  text-decoration: none;
+  transition: color 0.1s;
+}
+
+a:hover {
+  color: var(--economy);
+}
+
+/* Panel / card primitives */
+.panel,
+.card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow:
+    0 14px 30px rgba(15, 23, 42, 0.03),
+    0 2px 8px rgba(15, 23, 42, 0.03);
+}
+
+.panel-alt {
+  background: var(--panel2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+.panel-header {
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.02),
+    rgba(0, 0, 0, 0)
+  );
+  border-bottom: 1px solid rgba(40, 30, 20, 0.12);
+  padding: 8px 14px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--muted);
+}
+
+/* Status Indicators */
+.status-dot {
+  width: 6px;
+  height: 6px;
+  display: inline-block;
+  border-radius: 999px;
+}
+
+.status-dot.active {
+  background: var(--status-ok);
+}
+
+.status-dot.warning {
+  background: var(--status-warn);
+}
+
+.status-dot.critical {
+  background: var(--status-crit);
+}
+
+.status-dot.inactive {
+  background: var(--status-inactive);
+}
+
+/* Log Entries */
+.log-entry {
+  font-size: 12px;
+  padding: 6px 10px;
+  border-bottom: 1px solid rgba(40, 30, 20, 0.08);
+  transition: background 0.1s;
+  font-family: var(--font-mono);
+  background: var(--panel2);
+}
+
+.log-entry:hover {
+  background: #efe7d7;
+}
+
+.log-entry.critical {
+  border-left: 2px solid var(--status-crit);
+}
+
+.log-entry.warning {
+  border-left: 2px solid var(--status-warn);
+}
+
+/* Buttons - Minimal, no decoration */
+.btn {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 9px 18px;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  cursor: pointer;
+  border-radius: 999px;
+  transition: background 0.12s ease, color 0.12s ease, box-shadow 0.12s ease,
+    border-color 0.12s ease, transform 0.08s ease;
+}
+
+.btn:hover {
+  border-color: rgba(40, 30, 20, 0.22);
+  background: #f2ebe0;
+  box-shadow: 0 10px 20px rgba(15, 23, 42, 0.08);
+}
+
+.btn:active {
+  transform: translate(1px, 1px);
+}
+
+.btn-primary {
+  background: var(--research);
+  color: white;
+  border-color: var(--research);
+}
+
+.btn-primary:hover {
+  background: #255f95;
+  border-color: #255f95;
+}
+
+/* Data Display */
+.data-label {
+  color: var(--muted);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+}
+
+.data-value {
+  color: var(--text);
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.data-value.accent {
+  color: var(--economy);
+}
+
+.data-value.critical {
+  color: var(--status-crit);
+}
+
+/* Tables */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+th {
+  text-align: left;
+  padding: 8px 12px;
+  background: var(--panel2);
+  border-bottom: 1px solid rgba(40, 30, 20, 0.14);
+  color: var(--muted);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 10px;
+}
+
+td {
+  padding: 8px 12px;
+  border-bottom: 1px solid rgba(40, 30, 20, 0.06);
+}
+
+tr:hover td {
+  background: #f3ebdd;
+}
+
+/* Pixel Map Colors */
+.tile-residential { background: #6fbf73; }
+.tile-industrial { background: #c2a15a; }
+.tile-research { background: #4f7fd8; }
+.tile-agricultural { background: #9dd66f; }
+.tile-governance { background: #b88a5a; }
+.tile-empty { background: #e4dcc7; }
+
+/* Pixel Navigation */
+/* Minimal Navigation */
+.minimal-nav-header {
+  border-bottom: 1px solid var(--border);
+  background: var(--panel);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+}
+
+.minimal-nav-container {
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.minimal-logo {
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.minimal-logo-text {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  transition: color 0.2s ease;
+}
+
+.minimal-logo:hover .minimal-logo-text {
+  color: var(--research);
+}
+
+.minimal-nav-metrics {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex: 1;
+  justify-content: center;
+  padding: 0 16px;
+}
+
+.minimal-metric {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.minimal-metric-label {
+  font-size: 9px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 500;
+}
+
+.minimal-metric-value {
+  font-size: 14px;
+  font-weight: 600;
+  font-family: var(--font-mono);
+  color: var(--text);
+}
+
+.minimal-nav {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  flex-wrap: wrap;
+  flex-shrink: 0;
+  justify-content: flex-end;
+}
+
+.minimal-nav-link {
+  padding: 6px 12px;
+  text-decoration: none;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  transition: all 0.2s ease;
+  border-bottom: 2px solid transparent;
+  position: relative;
+}
+
+.minimal-nav-link:hover {
+  color: var(--text);
+  background: var(--bg-secondary);
+}
+
+.minimal-nav-link.active {
+  color: var(--text);
+  border-bottom-color: var(--desert);
+  font-weight: 600;
+}
+
+/* Legacy nav-link for backwards compatibility */
+.nav-link {
+  color: var(--muted);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  padding: 8px 16px;
+  border-radius: 999px;
+  transition: color 0.12s ease, background 0.12s ease;
+}
+
+.nav-link:hover {
+  color: var(--text);
+  background: rgba(0, 0, 0, 0.02);
+}
+
+.nav-link.active {
+  color: var(--text);
+  background: rgba(42, 116, 184, 0.08);
+  box-shadow: inset 0 -2px 0 var(--research);
+}
+
+/* Code/Data Blocks */
+.code-block {
+  background: var(--panel2);
+  padding: 12px;
+  font-size: 11px;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+/* Progress Bar */
+.progress-bar {
+  height: 4px;
+  background: rgba(15, 23, 42, 0.06);
+  overflow: hidden;
+  border-radius: 999px;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: var(--economy);
+  transition: width 0.3s;
+}
+
+/* Timestamp */
+.timestamp {
+  font-size: 10px;
+  color: var(--muted-soft);
+  font-variant-numeric: tabular-nums;
+  font-family: var(--font-mono);
+}
+
+/* ID Display */
+.agent-id {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: 0.05em;
+}
+
+/* No user interaction indicator */
+.observe-only {
+  position: relative;
+}
+
+.observe-only::after {
+  content: 'OBSERVE ONLY';
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  font-size: 8px;
+  color: var(--muted-soft);
+  letter-spacing: 0.1em;
+  opacity: 0.5;
+}
+
+/* Loading Planet Animation */
+@keyframes twinkle {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 1; }
+}
+
+@keyframes planetRotate {
+  from { transform: rotateY(0deg); }
+  to { transform: rotateY(360deg); }
+}
+
+@keyframes orbitRotate {
+  from { transform: rotateZ(0deg); }
+  to { transform: rotateZ(360deg); }
+}
+
+@keyframes orbitRotateReverse {
+  from { transform: rotateZ(360deg); }
+  to { transform: rotateZ(0deg); }
+}
+
+@keyframes particleOrbit {
+  from { transform: rotateZ(0deg) translateX(80px) rotateZ(0deg); }
+  to { transform: rotateZ(360deg) translateX(80px) rotateZ(-360deg); }
+}
+
+@keyframes planetPulse {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.05); }
+}
+
+@keyframes loadingShimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.planet-container {
+  width: 120px;
+  height: 120px;
+  position: relative;
+  perspective: 1000px;
+}
+
+.planet-sphere {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: linear-gradient(
+    135deg,
+    #2a74b8 0%,
+    #1e5a8f 25%,
+    #2a74b8 50%,
+    #1e5a8f 75%,
+    #2a74b8 100%
+  );
+  position: relative;
+  overflow: hidden;
+  box-shadow: 
+    inset -20px -20px 40px rgba(0, 0, 0, 0.3),
+    inset 20px 20px 40px rgba(255, 255, 255, 0.1),
+    0 0 60px rgba(42, 116, 184, 0.4),
+    0 0 120px rgba(42, 116, 184, 0.2);
+  animation: planetRotate 20s linear infinite;
+}
+
+.planet-surface {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+}
+
+.planet-continent {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(46, 139, 87, 0.4);
+  box-shadow: inset 0 0 20px rgba(46, 139, 87, 0.6);
+}
+
+.continent-1 {
+  width: 30px;
+  height: 30px;
+  top: 20%;
+  left: 30%;
+  animation: planetPulse 4s ease-in-out infinite;
+}
+
+.continent-2 {
+  width: 25px;
+  height: 25px;
+  top: 60%;
+  right: 20%;
+  animation: planetPulse 5s ease-in-out infinite 0.5s;
+}
+
+.continent-3 {
+  width: 20px;
+  height: 20px;
+  bottom: 25%;
+  left: 25%;
+  animation: planetPulse 4.5s ease-in-out infinite 1s;
+}
+
+.continent-4 {
+  width: 18px;
+  height: 18px;
+  top: 40%;
+  left: 60%;
+  animation: planetPulse 5.5s ease-in-out infinite 1.5s;
+}
+
+.continent-5 {
+  width: 22px;
+  height: 22px;
+  bottom: 15%;
+  right: 30%;
+  animation: planetPulse 4.8s ease-in-out infinite 2s;
+}
+
+.planet-atmosphere {
+  position: absolute;
+  inset: -10px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 30% 30%,
+    rgba(42, 116, 184, 0.3) 0%,
+    transparent 70%
+  );
+  animation: planetPulse 3s ease-in-out infinite;
+}
+
+.planet-glow-ring {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 2px solid rgba(42, 116, 184, 0.3);
+  box-shadow: 
+    0 0 20px rgba(42, 116, 184, 0.5),
+    inset 0 0 20px rgba(42, 116, 184, 0.2);
+  animation: planetPulse 2s ease-in-out infinite;
+}
+
+.orbital-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(42, 116, 184, 0.15);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.ring-1 {
+  width: 140px;
+  height: 140px;
+  animation: orbitRotate 15s linear infinite;
+}
+
+.ring-2 {
+  width: 160px;
+  height: 160px;
+  animation: orbitRotateReverse 20s linear infinite;
+}
+
+.ring-3 {
+  width: 180px;
+  height: 180px;
+  animation: orbitRotate 25s linear infinite;
+}
+
+.planet-particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: rgba(42, 116, 184, 0.8);
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform-origin: 0 0;
+  box-shadow: 0 0 6px rgba(42, 116, 184, 0.8);
+  animation: particleOrbit 8s linear infinite;
+  animation-delay: var(--delay);
+}
+
+.loading-progress-bar {
+  width: 100%;
+  height: 4px;
+  background: rgba(42, 116, 184, 0.15);
+  border-radius: 999px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.loading-progress-fill {
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    #2a74b8 0%,
+    #4ade80 50%,
+    #2a74b8 100%
+  );
+  background-size: 200% 100%;
+  border-radius: 999px;
+  transition: width 0.2s ease;
+  animation: loadingShimmer 2s linear infinite;
+  box-shadow: 0 0 8px rgba(42, 116, 184, 0.4);
+}
+
+/* Sandy loading progress bar */
+.loading-progress-bar-sandy {
+  width: 100%;
+  height: 3px;
+  background: rgba(217, 181, 108, 0.15);
+  border-radius: 999px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.loading-progress-fill-sandy {
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    #D9B56C 0%,
+    #7A4E2D 50%,
+    #D9B56C 100%
+  );
+  background-size: 200% 100%;
+  border-radius: 999px;
+  transition: width 0.2s ease;
+  animation: loadingShimmer 2s linear infinite;
+  box-shadow: 0 0 4px rgba(217, 181, 108, 0.3);
 }

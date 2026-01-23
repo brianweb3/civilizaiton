@@ -6,12 +6,22 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "slice-sprites": "node scripts/slice-spritesheet.js"
   },
   "dependencies": {
+    "@pixi/react": "^8.0.5",
+    "@types/uuid": "^10.0.0",
+    "@types/ws": "^8.18.1",
     "next": "16.1.4",
+    "pixi.js": "^8.15.0",
     "react": "19.2.3",
-    "react-dom": "19.2.3"
+    "react-dom": "19.2.3",
+    "socket.io": "^4.8.3",
+    "socket.io-client": "^4.8.3",
+    "uuid": "^13.0.0",
+    "ws": "^8.19.0",
+    "zustand": "^5.0.10"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
