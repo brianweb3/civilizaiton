@@ -430,9 +430,7 @@ export default function TopDownMapPixi({
             {
               fontSize: 12,
               fill: 0x000000,
-              backgroundColor: 0xFFFFFF,
-              padding: 4,
-            },
+            }
           });
           debugText.x = hoveredTile.x * TILE_SIZE * currentCamera.zoom + currentCamera.x;
           debugText.y = hoveredTile.y * TILE_SIZE * currentCamera.zoom + currentCamera.y - 40;
