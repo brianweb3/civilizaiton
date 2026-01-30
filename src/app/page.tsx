@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useClawtownStore } from "@/store/simulation";
 import { playTypingSound } from "@/lib/sounds";
+import { CONTRACT_ADDRESS } from "@/lib/constants";
 
 // Component for letter-by-letter animation
 function TypingText({
@@ -165,8 +166,7 @@ export default function Home() {
           <button
             type="button"
             onClick={() => {
-              const ca = (typeof window !== "undefined" && process.env.NEXT_PUBLIC_CA_ADDRESS) ? process.env.NEXT_PUBLIC_CA_ADDRESS : (typeof window !== "undefined" ? window.location.origin : "");
-              navigator.clipboard?.writeText(ca).then(() => {}, () => {});
+              navigator.clipboard?.writeText(CONTRACT_ADDRESS).then(() => {}, () => {});
             }}
             className="px-4 py-3 text-[10px] font-normal uppercase bg-[var(--panel)] text-[var(--text)] border-2 border-[var(--border)] shadow-[var(--pixel-shadow)] hover:bg-[var(--bg2)] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none"
           >
