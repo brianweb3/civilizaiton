@@ -162,6 +162,24 @@ export default function Home() {
           >
             DEVELOPER
           </button>
+          <button
+            type="button"
+            onClick={() => {
+              const ca = (typeof window !== "undefined" && process.env.NEXT_PUBLIC_CA_ADDRESS) ? process.env.NEXT_PUBLIC_CA_ADDRESS : (typeof window !== "undefined" ? window.location.origin : "");
+              navigator.clipboard?.writeText(ca).then(() => {}, () => {});
+            }}
+            className="px-4 py-3 text-[10px] font-normal uppercase bg-[var(--panel)] text-[var(--text)] border-2 border-[var(--border)] shadow-[var(--pixel-shadow)] hover:bg-[var(--bg2)] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none"
+          >
+            COPY CA
+          </button>
+          <a
+            href="https://x.com/i/communities/2017285498591408442"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-4 py-3 text-[10px] font-normal uppercase bg-[var(--panel)] text-[var(--text)] border-2 border-[var(--border)] shadow-[var(--pixel-shadow)] hover:bg-[var(--bg2)] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none inline-block"
+          >
+            X / TWITTER
+          </a>
         </div>
       </div>
 
