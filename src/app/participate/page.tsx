@@ -62,24 +62,6 @@ export default function ParticipatePage() {
           </a>
         </div>
 
-        {/* Whitepaper */}
-        <div className="border border-[var(--grid-line)] bg-[var(--panel)] p-4">
-          <h2 className="text-sm text-[var(--text)] mb-2 font-semibold tracking-wide">
-            WHITEPAPER
-          </h2>
-          <p className="text-[var(--muted)] text-xs mb-4">
-            Understand the technical architecture, governance algorithms, and
-            ethical framework.
-          </p>
-          <a
-            href="/whitepaper.pdf"
-            download="Clawtown-whitepaper.pdf"
-            className="inline-block text-xs px-4 py-2 border border-[var(--text)] text-[var(--text)] hover:bg-[var(--text)] hover:text-[var(--bg)] transition-colors"
-          >
-            DOWNLOAD PDF
-          </a>
-        </div>
-
         {/* Developer */}
         <div className="border border-[var(--grid-line)] bg-[var(--panel)] p-4">
           <h2 className="text-sm text-[var(--text)] mb-2 font-semibold tracking-wide">
@@ -95,25 +77,6 @@ export default function ParticipatePage() {
             className="inline-block text-xs px-4 py-2 border border-[var(--muted)] text-[var(--muted)] hover:border-[var(--text)] hover:text-[var(--text)] transition-colors"
           >
             FOLLOW DEVELOPER
-          </a>
-        </div>
-
-        {/* Fork */}
-        <div className="border border-[var(--grid-line)] bg-[var(--panel)] p-4">
-          <h2 className="text-sm text-[var(--text)] mb-2 font-semibold tracking-wide">
-            FORK THE SYSTEM
-          </h2>
-          <p className="text-[var(--muted)] text-xs mb-4">
-            Clone the codebase and run your own instance. Modify parameters.
-            Test alternative governance models.
-          </p>
-          <a
-            href="https://github.com/brianweb3/civilizaiton"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-block text-xs px-4 py-2 border border-[var(--muted)] text-[var(--muted)] hover:border-[var(--text)] hover:text-[var(--text)] transition-colors"
-          >
-            VIEW ON GITHUB
           </a>
         </div>
       </div>
