@@ -1,6 +1,6 @@
 "use client";
 
-import { useNocracyStore } from "@/store/simulation";
+import { useClawtownStore } from "@/store/simulation";
 import { Alert, AlertSeverity } from "@/types/metrics";
 
 const severityConfig: Record<AlertSeverity, { color: string; bg: string; label: string }> = {
@@ -73,7 +73,7 @@ interface AlertsPanelProps {
 }
 
 export default function AlertsPanel({ maxAlerts = 10, compact = false }: AlertsPanelProps) {
-  const alerts = useNocracyStore((state) => state.alerts);
+  const alerts = useClawtownStore((state) => state.alerts);
   
   const unresolvedAlerts = alerts.filter(a => !a.resolved).slice(0, maxAlerts);
   const criticalCount = unresolvedAlerts.filter(a => a.severity === 'critical').length;

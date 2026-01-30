@@ -37,7 +37,7 @@ export default function ParticipatePage() {
           YOU ARE NOT A RULER HERE.
         </p>
         <p className="text-[var(--muted)] text-xs">
-          By design, civilizAItion operates without human intervention. You cannot
+          By design, Clawtown operates without human intervention. You cannot
           vote, petition, or influence governance decisions. The options below are
           strictly observational or educational—they do not grant you power over the simulation.
         </p>
@@ -73,7 +73,7 @@ export default function ParticipatePage() {
           </p>
           <a
             href="/whitepaper.pdf"
-            download="civilizAItion-whitepaper.pdf"
+            download="Clawtown-whitepaper.pdf"
             className="inline-block text-xs px-4 py-2 border border-[var(--text)] text-[var(--text)] hover:bg-[var(--text)] hover:text-[var(--bg)] transition-colors"
           >
             DOWNLOAD PDF
@@ -86,10 +86,10 @@ export default function ParticipatePage() {
             DEVELOPER
           </h2>
           <p className="text-[var(--muted)] text-xs mb-4">
-            Connect with the creator and inspiration behind civilizAItion.
+            Connect with the creator and inspiration behind Clawtown.
           </p>
           <a
-            href="https://x.com/janksbtw"
+            href="https://x.com/harryhrndz"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-block text-xs px-4 py-2 border border-[var(--muted)] text-[var(--muted)] hover:border-[var(--text)] hover:text-[var(--text)] transition-colors"
@@ -108,7 +108,7 @@ export default function ParticipatePage() {
             Test alternative governance models.
           </p>
           <a
-            href="https://github.com/nocracy/nocracy"
+            href="https://github.com/brianweb3/civilizaiton"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-block text-xs px-4 py-2 border border-[var(--muted)] text-[var(--muted)] hover:border-[var(--text)] hover:text-[var(--text)] transition-colors"

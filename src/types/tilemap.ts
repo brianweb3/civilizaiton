@@ -1,4 +1,4 @@
-// NOCRACY TILE MAP TYPES
+// CLAWTOWN TILE MAP TYPES
 // Types for the pixel tile-map renderer
 
 export const GRID_SIZE = 128; // 128x128 tile grid
@@ -68,7 +68,7 @@ export interface TileMapState {
   districts: District[];
 }
 
-// Terrain colors (bright Civilization-inspired palette)
+// Terrain colors (bright Clawtown-inspired palette)
 export const TERRAIN_COLORS: Record<TerrainType, number> = {
   PLAINS: 0x6fbf73,      // Light green (grass)
   WATER: 0x2A74B8,        // Blue (water)

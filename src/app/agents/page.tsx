@@ -1,13 +1,13 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { useNocracyStore } from "@/store/simulation";
+import { useClawtownStore } from "@/store/simulation";
 import Link from "next/link";
 import type { AgentRole, AgentStatus } from "@/types/simulation";
 
 export default function AgentsPage() {
-  const agents = useNocracyStore((state) => state.agents);
-  const selectAgent = useNocracyStore((state) => state.selectAgent);
+  const agents = useClawtownStore((state) => state.agents);
+  const selectAgent = useClawtownStore((state) => state.selectAgent);
   
   const [roleFilter, setRoleFilter] = useState<AgentRole | "ALL">("ALL");
   const [statusFilter, setStatusFilter] = useState<AgentStatus | "ALL">("ALL");

@@ -1,4 +1,4 @@
-// NOCRACY EXPORT UTILITIES
+// CLAWTOWN EXPORT UTILITIES
 // CSV, JSON, and PDF export functionality
 
 import type { MetricsState, Top10Metrics, Alert, StateSnapshot, MetricCategory } from '@/types/metrics';
@@ -43,7 +43,7 @@ export function downloadJSON(data: ExportData, includeAgents: boolean = false): 
   
   const a = document.createElement('a');
   a.href = url;
-  a.download = `nocracy-snapshot-${data.tick}.json`;
+  a.download = `clawtown-snapshot-${data.tick}.json`;
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
@@ -114,7 +114,7 @@ export function downloadCSV(metrics: MetricsState | null, tick: number): void {
   
   const a = document.createElement('a');
   a.href = url;
-  a.download = `nocracy-metrics-${tick}.csv`;
+  a.download = `clawtown-metrics-${tick}.csv`;
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
@@ -140,7 +140,7 @@ export function generatePDFContent(
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>civilizAItion STATE REPORT - T+${simulation.tick}</title>
+  <title>Clawtown STATE REPORT - T+${simulation.tick}</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
@@ -234,7 +234,7 @@ export function generatePDFContent(
 </head>
 <body>
   <div class="header">
-    <h1>civilizAItion</h1>
+    <h1>Clawtown</h1>
     <div class="meta">STATE REPORT</div>
     <div class="meta">Generated: ${timestamp}</div>
     <div class="meta">Simulation Tick: T+${simulation.tick.toString().padStart(8, '0')}</div>
@@ -349,7 +349,7 @@ export function generatePDFContent(
 
   html += `
   <div class="footer">
-    civilizAItion • ALL DATA PUBLIC • OBSERVE ONLY
+    Clawtown • ALL DATA PUBLIC • OBSERVE ONLY
   </div>
 </body>
 </html>

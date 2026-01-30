@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
-import { useNocracyStore } from "@/store/simulation";
+import { useClawtownStore } from "@/store/simulation";
 import { 
   MetricCategory, 
   CATEGORY_LABELS, 
@@ -109,7 +109,7 @@ function CategorySection({
   expanded: boolean;
   onToggle: () => void;
 }) {
-  const storeMetrics = useNocracyStore((state) => state.metrics);
+  const storeMetrics = useClawtownStore((state) => state.metrics);
   const color = CATEGORY_COLORS[category];
   const label = CATEGORY_LABELS[category];
 
@@ -211,7 +211,7 @@ function CategorySection({
 
 export default function DataPage() {
   const router = useRouter();
-  const { manifestAccepted, simulation, metrics, alerts, top10, agents, buildings, laws } = useNocracyStore();
+  const { manifestAccepted, simulation, metrics, alerts, top10, agents, buildings, laws } = useClawtownStore();
   
   const [timeRange, setTimeRange] = useState<TimeRange>('1h');
   const [searchTerm, setSearchTerm] = useState('');

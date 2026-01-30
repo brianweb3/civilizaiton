@@ -4,7 +4,7 @@
 # Замените YOUR_USERNAME на ваш GitHub username
 
 GITHUB_USERNAME="YOUR_USERNAME"  # <-- ЗАМЕНИТЕ НА ВАШ USERNAME
-REPO_NAME="civilizaiton"
+REPO_NAME="clawtown"
 
 echo "Настройка remote..."
 git remote add origin https://github.com/${GITHUB_USERNAME}/${REPO_NAME}.git 2>/dev/null || git remote set-url origin https://github.com/${GITHUB_USERNAME}/${REPO_NAME}.git

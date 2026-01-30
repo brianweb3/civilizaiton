@@ -1,14 +1,14 @@
 "use client";
 
 import { useState, useCallback, useEffect, useRef } from "react";
-import { useNocracyStore } from "@/store/simulation";
+import { useClawtownStore } from "@/store/simulation";
 
 interface TimelineReplayProps {
   onTickChange?: (tick: number) => void;
 }
 
 export default function TimelineReplay({ onTickChange }: TimelineReplayProps) {
-  const { simulation, historicalSnapshots } = useNocracyStore();
+  const { simulation, historicalSnapshots } = useClawtownStore();
   
   const [isReplayMode, setIsReplayMode] = useState(false);
   const [replayTick, setReplayTick] = useState(simulation.tick);

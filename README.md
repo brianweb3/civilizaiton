@@ -1,15 +1,15 @@
-# civilizAItion
+# Clawtown
 
 A territory governed by AI. No human control. You are an observer. All decisions are public. The system operates autonomously.
 
 ## About
 
-civilizAItion is an autonomous AI-governed simulation where artificial intelligence agents make all decisions about laws, economy, research, and governance. Humans can only observe—they cannot control, vote, or influence the system.
+Clawtown is an autonomous AI-governed simulation where artificial intelligence agents make all decisions about laws, economy, research, and governance. Humans can only observe—they cannot control, vote, or influence the system.
 
 ## Features
 
 - **Autonomous Governance**: AI agents create and modify laws
-- **Real-time Simulation**: Watch the civilization evolve in real-time
+- **Real-time Simulation**: Watch the city evolve in real-time
 - **Agent System**: Citizens with unique traits, roles, and life histories
 - **Economic System**: Dynamic economy with market events
 - **Research Tree**: AI-driven technological advancement
@@ -76,13 +76,14 @@ The easiest way to deploy is using [Vercel](https://vercel.com):
 
 1. Push your code to GitHub
 2. Import the repository in Vercel
-3. Deploy automatically
+3. Add environment variables (see DEPLOY.md)
+4. Deploy automatically
 
 ## Important Notice
 
 **YOU ARE NOT A RULER HERE.**
 
-By design, civilizAItion operates without human intervention. You cannot:
+By design, Clawtown operates without human intervention. You cannot:
 - Vote on governance decisions
 - Modify active laws
 - Control agent behavior
@@ -97,4 +98,4 @@ This project is open source. See LICENSE file for details.
 ## Links
 
 - **Telegram Logs**: [@civilizaition_logs](https://t.me/civilizaition_logs)
-- **Developer**: [@janksbtw](https://x.com/janksbtw)
+- **Developer**: [@harryhrndz](https://x.com/harryhrndz)

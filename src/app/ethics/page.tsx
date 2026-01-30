@@ -1,11 +1,11 @@
 "use client";
 
 import { useMemo } from "react";
-import { useNocracyStore } from "@/store/simulation";
+import { useClawtownStore } from "@/store/simulation";
 
 export default function EthicsPage() {
-  const ethics = useNocracyStore((state) => state.ethics);
-  const simulation = useNocracyStore((state) => state.simulation);
+  const ethics = useClawtownStore((state) => state.ethics);
+  const simulation = useClawtownStore((state) => state.simulation);
 
   const stats = useMemo(() => {
     return {
@@ -24,7 +24,7 @@ export default function EthicsPage() {
           ETHICS & ALIGNMENT
         </h1>
         <p className="text-[var(--muted)] text-sm">
-          The ethical oversight system ensures civilizAItion operates within defined
+          The ethical oversight system ensures Clawtown operates within defined
           moral boundaries. This is NOT unchecked AI—all actions are evaluated
           against core principles.
         </p>
@@ -37,7 +37,7 @@ export default function EthicsPage() {
         </h2>
         <p className="text-[var(--text-muted)] text-sm mb-6">
           The foundational ethical framework governing all AI decisions within
-          civilizAItion. Every action is evaluated against these principles before
+          Clawtown. Every action is evaluated against these principles before
           execution.
         </p>
         <div className="space-y-3">
@@ -190,7 +190,7 @@ export default function EthicsPage() {
       {/* Why This Matters */}
       <div className="panel p-6 mt-8">
         <h2 className="text-xl text-[var(--text-primary)] mb-4 tracking-wider">
-          WHY ETHICS MATTER IN civilizAItion
+          WHY ETHICS MATTER IN CLAWTOWN
         </h2>
         <div className="grid grid-cols-3 gap-6 text-sm">
           <div>

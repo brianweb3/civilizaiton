@@ -1,11 +1,16 @@
 "use client";
 
-import { useState, useMemo } from "react";
-import { useNocracyStore } from "@/store/simulation";
+import { useState, useMemo, useEffect } from "react";
+import { useClawtownStore } from "@/store/simulation";
 import type { LawCategory, LawStatus } from "@/types/simulation";
 
 export default function LawsPage() {
-  const laws = useNocracyStore((state) => state.laws);
+  const laws = useClawtownStore((state) => state.laws);
+  const clearPendingLawNotifications = useClawtownStore((state) => state.clearPendingLawNotifications);
+
+  useEffect(() => {
+    clearPendingLawNotifications();
+  }, [clearPendingLawNotifications]);
   
   const [categoryFilter, setCategoryFilter] = useState<LawCategory | "ALL">("ALL");
   const [statusFilter, setStatusFilter] = useState<LawStatus | "ALL">("ALL");
@@ -49,7 +54,7 @@ export default function LawsPage() {
           LAWS & CONSTITUTION
         </h1>
         <p className="text-[var(--muted)] text-sm">
-          The complete legal framework of civilizAItion. All laws are generated and
+          The complete legal framework of Clawtown. All laws are generated and
           enforced by AI governance modules.
         </p>
       </div>
@@ -213,13 +218,13 @@ export default function LawsPage() {
                 <div className="grid grid-cols-2 gap-6 mb-4">
                   <div>
                     <div className="text-xs text-[var(--muted)] font-medium mb-2 tracking-wide">DESCRIPTION</div>
-                    <div className="text-[var(--text)] text-sm leading-relaxed">
+                    <div className="text-[var(--text)] text-sm leading-relaxed whitespace-pre-line">
                       {law.description}
                     </div>
                   </div>
                   <div>
                     <div className="text-xs text-[var(--muted)] font-medium mb-2 tracking-wide">PURPOSE</div>
-                    <div className="text-[var(--text)] text-sm leading-relaxed">
+                    <div className="text-[var(--text)] text-sm leading-relaxed whitespace-pre-line">
                       {law.purpose}
                     </div>
                   </div>
@@ -227,7 +232,7 @@ export default function LawsPage() {
 
                 <div className="mb-4">
                   <div className="text-xs text-[var(--muted)] font-medium mb-2 tracking-wide">AI REASONING</div>
-                  <div className="bg-[var(--panel)] p-3 text-[var(--text)] text-sm border-l-2 border-[var(--research)] rounded">
+                  <div className="bg-[var(--panel)] p-3 text-[var(--text)] text-sm border-l-2 border-[var(--research)] whitespace-pre-line leading-relaxed">
                     {law.reasoning}
                   </div>
                 </div>

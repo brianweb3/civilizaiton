@@ -19,7 +19,7 @@ export async function GET() {
     }
 
     // Test 2: Try to send a test message
-    const testMessage = '🧪 TEST MESSAGE\n\nThis is a test from civilizAItion API. If you see this, the bot is working!';
+    const testMessage = '🧪 TEST MESSAGE\n\nThis is a test from Clawtown API. If you see this, the bot is working!';
     
     const sendUrl = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
     const sendResponse = await fetch(sendUrl, {

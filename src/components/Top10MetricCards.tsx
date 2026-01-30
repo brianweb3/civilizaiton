@@ -1,6 +1,6 @@
 "use client";
 
-import { useNocracyStore } from "@/store/simulation";
+import { useClawtownStore } from "@/store/simulation";
 import { TopMetric, MetricStatus } from "@/types/metrics";
 import { getMetricDefinition, formatMetricValue } from "@/lib/metrics-definitions";
 
@@ -189,8 +189,8 @@ function ScoreCard({
 }
 
 export default function Top10MetricCards({ compact = false }: { compact?: boolean }) {
-  const top10 = useNocracyStore((state) => state.top10);
-  const scores = useNocracyStore((state) => state.scores);
+  const top10 = useClawtownStore((state) => state.top10);
+  const scores = useClawtownStore((state) => state.scores);
 
   if (!top10 || !scores) {
     return (

@@ -2,16 +2,16 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useNocracyStore } from "@/store/simulation";
+import { useClawtownStore } from "@/store/simulation";
 
 export default function Navigation() {
   const pathname = usePathname();
-  const { agents, economy, scores, research } = useNocracyStore();
-  
+  const { agents, economy, scores, research } = useClawtownStore();
+
   const activeAgents = agents.filter((a) => a.status === "ACTIVE");
-  const activeResearch = research?.nodes?.find(n => n.status === 'IN_PROGRESS');
-  const researchProgress = activeResearch ? (activeResearch.progress * 100) : 0;
-  
+  const activeResearch = research?.nodes?.find((n) => n.status === "IN_PROGRESS");
+  const researchProgress = activeResearch ? activeResearch.progress * 100 : 0;
+
   const formatMoney = (amount: number) => {
     if (amount >= 1000000) return `${(amount / 1000000).toFixed(1)}M`;
     if (amount >= 1000) return `${(amount / 1000).toFixed(1)}K`;
@@ -30,64 +30,71 @@ export default function Navigation() {
   ];
 
   return (
-    <header className="minimal-nav-header">
-      <div className="minimal-nav-container">
+    <header className="h-12 border-b-2 border-[var(--border)] bg-[var(--panel)] sticky top-0 z-40 shadow-[var(--pixel-shadow)]">
+      <div className="h-full flex items-center justify-between px-4">
         {/* Logo */}
-        <Link href="/simulation" className="minimal-logo">
-          <span className="minimal-logo-text">civilizAItion</span>
+        <Link
+          href="/simulation"
+          className="flex items-center gap-2 shrink-0"
+        >
+          <span className="font-mono text-sm font-normal tracking-wide text-[var(--text)]">
+            CLAW<span className="text-[var(--openclaw-red)]">TOWN</span>
+          </span>
         </Link>
 
-        {/* Metrics - only show on simulation page */}
+        {/* Metrics — no Status: Online, no Output */}
         {pathname === "/simulation" && (
-          <div className="minimal-nav-metrics">
-            <div className="minimal-metric">
-              <span className="minimal-metric-label">POPULATION</span>
-              <span className="minimal-metric-value" style={{ color: 'var(--research)' }}>
+          <div className="hidden md:flex items-center gap-3 font-mono text-xs">
+            <span className="text-[var(--text-secondary)]">
+              Claw residents:{" "}
+              <span className="text-[var(--openclaw-red)] font-semibold">
                 {activeAgents.length}
               </span>
-            </div>
-            <div className="minimal-metric">
-              <span className="minimal-metric-label">TREASURY</span>
-              <span className="minimal-metric-value" style={{ color: 'var(--desert)' }}>
+            </span>
+            <span className="text-[var(--border)]">|</span>
+            <span className="text-[var(--text-secondary)]">
+              Agents:{" "}
+              <span className="text-[var(--openclaw-red)] font-semibold">
+                {activeAgents.length}
+              </span>
+            </span>
+            <span className="text-[var(--border)]">|</span>
+            <span className="text-[var(--text-secondary)]">
+              Treasury:{" "}
+              <span className="text-[var(--openclaw-red)] font-semibold">
                 ${formatMoney(economy.currencySupply)}
               </span>
-            </div>
-            <div className="minimal-metric">
-              <span className="minimal-metric-label">OUTPUT</span>
-              <span className="minimal-metric-value" style={{ color: 'var(--economy)' }}>
-                {Math.round(economy.productionOutput)}
-              </span>
-            </div>
-            <div className="minimal-metric">
-              <span className="minimal-metric-label">RESEARCH</span>
-              <span className="minimal-metric-value" style={{ color: 'var(--ethics)' }}>
+            </span>
+            <span className="text-[var(--border)]">|</span>
+            <span className="text-[var(--text-secondary)]">
+              Research:{" "}
+              <span className="text-[var(--openclaw-red)] font-semibold">
                 {Math.round(researchProgress)}%
               </span>
-            </div>
-            <div className="minimal-metric">
-              <span className="minimal-metric-label">STABILITY</span>
-              <span className="minimal-metric-value" style={{ color: 'var(--economy)' }}>
+            </span>
+            <span className="text-[var(--border)]">|</span>
+            <span className="text-[var(--text-secondary)]">
+              Stability:{" "}
+              <span className="text-[var(--openclaw-red)] font-semibold">
                 {scores ? Math.round(scores.state_health_score) : 0}%
               </span>
-            </div>
-            <div className="minimal-metric">
-              <span className="minimal-metric-label">LEGITIMACY</span>
-              <span className="minimal-metric-value" style={{ color: 'var(--desert)' }}>
-                {scores ? Math.round(scores.legitimacy_score) : 0}%
-              </span>
-            </div>
+            </span>
           </div>
         )}
 
-        {/* Navigation */}
-        <nav className="minimal-nav">
+        {/* Nav links — SIMULATION with white text when active */}
+        <nav className="flex items-center gap-1 shrink-0">
           {navItems.map((item) => {
             const isActive = pathname === item.href;
             return (
               <Link
                 key={item.name}
                 href={item.href}
-                className={`minimal-nav-link ${isActive ? "active" : ""}`}
+                className={`px-2 py-2 text-xs font-normal uppercase tracking-wide border-2 border-transparent transition-all ${
+                  isActive
+                    ? "bg-[var(--openclaw-red)] border-[var(--openclaw-red)] !text-white hover:!text-white shadow-[var(--pixel-shadow-red)]"
+                    : "text-[var(--text-secondary)] hover:text-[var(--text)] hover:bg-[var(--bg2)] hover:border-[var(--border)]"
+                }`}
               >
                 {item.name}
               </Link>

@@ -1,4 +1,4 @@
-// NOCRACY METRICS DEFINITIONS
+// CLAWTOWN METRICS DEFINITIONS
 // Complete configuration for all metrics
 
 import type { MetricDefinition, MetricCategory } from '@/types/metrics';

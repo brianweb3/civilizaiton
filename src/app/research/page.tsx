@@ -1,11 +1,11 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { useNocracyStore } from "@/store/simulation";
+import { useClawtownStore } from "@/store/simulation";
 import type { ResearchStatus } from "@/types/simulation";
 
 export default function ResearchPage() {
-  const research = useNocracyStore((state) => state.research);
+  const research = useClawtownStore((state) => state.research);
   const [statusFilter, setStatusFilter] = useState<ResearchStatus | "ALL">("ALL");
   const [expandedNode, setExpandedNode] = useState<string | null>(null);
 

@@ -2,7 +2,7 @@
 
 import { useEffect, useCallback, useState } from "react";
 import type { Agent } from "@/types/simulation";
-import { useNocracyStore } from "@/store/simulation";
+import { useClawtownStore } from "@/store/simulation";
 
 interface AgentModalProps {
   agent: Agent;
@@ -36,7 +36,7 @@ const ROLE_DESCRIPTIONS: Record<Agent["role"], string> = {
 };
 
 export default function AgentModal({ agent, onClose }: AgentModalProps) {
-  const { agents, buildings } = useNocracyStore();
+  const { agents, buildings } = useClawtownStore();
   const [activeTab, setActiveTab] = useState<TabType>("overview");
   
   // Find parents and children

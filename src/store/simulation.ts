@@ -14,7 +14,7 @@ import type { TickData } from '@/lib/simulation-engine';
 import type { MetricsState, Top10Metrics, Alert, CompositeScores } from '@/types/metrics';
 import type { District, Tile, HistoricalSnapshot } from '@/types/tilemap';
 
-interface NocracyStore {
+interface ClawtownStore {
   // Simulation State
   simulation: SimulationState;
   population: Population;
@@ -43,6 +43,8 @@ interface NocracyStore {
   selectedAgentId: string | null;
   selectedBuildingId: string | null;
   manifestAccepted: boolean;
+  /** New laws adopted this session; shown as toasts until user dismisses or visits /laws */
+  pendingLawNotifications: Law[];
   
   // Actions
   setSimulation: (state: Partial<SimulationState>) => void;
@@ -62,6 +64,7 @@ interface NocracyStore {
   setAlerts: (alerts: Alert[]) => void;
   setDistricts: (districts: District[]) => void;
   addHistoricalSnapshot: (snapshot: HistoricalSnapshot) => void;
+  clearPendingLawNotifications: () => void;
   
   // Bulk updates from simulation
   applyTick: (data: TickData) => void;
@@ -208,7 +211,7 @@ const initialDistricts: District[] = [
   },
 ];
 
-export const useNocracyStore = create<NocracyStore>((set) => ({
+export const useClawtownStore = create<ClawtownStore>((set) => ({
   // Initial state
   simulation: initialSimulation,
   population: initialPopulation,
@@ -237,6 +240,7 @@ export const useNocracyStore = create<NocracyStore>((set) => ({
   selectedAgentId: null,
   selectedBuildingId: null,
   manifestAccepted: false,
+  pendingLawNotifications: [],
   
   // Actions
   setSimulation: (state) =>
@@ -279,11 +283,12 @@ export const useNocracyStore = create<NocracyStore>((set) => ({
     set((s) => ({
       historicalSnapshots: [...s.historicalSnapshots, snapshot].slice(-1000), // Keep last 1000 snapshots
     })),
+  clearPendingLawNotifications: () => set(() => ({ pendingLawNotifications: [] })),
   
   // Bulk update from simulation tick
   applyTick: (data) =>
     set((s) => {
-      const newState: Partial<NocracyStore> = {};
+      const newState: Partial<ClawtownStore> = {};
       
       if (data.simulation) {
         newState.simulation = { ...s.simulation, ...data.simulation };
@@ -331,8 +336,11 @@ export const useNocracyStore = create<NocracyStore>((set) => ({
         newState.buildings = data.buildings;
       }
       
-      if (data.newLaws) {
-        newState.laws = data.newLaws;
+      if (data.newLaws && data.newLaws.length > 0) {
+        const existingIds = new Set(s.laws.map((l) => l.id));
+        const merged = [...data.newLaws.filter((l) => !existingIds.has(l.id)), ...s.laws];
+        newState.laws = merged;
+        newState.pendingLawNotifications = [...(s.pendingLawNotifications || []), ...data.newLaws];
       }
       
       if (data.newLogs) {
@@ -396,6 +404,6 @@ export const useNocracyStore = create<NocracyStore>((set) => ({
         newState.historicalSnapshots = [...s.historicalSnapshots, snapshot].slice(-1000);
       }
       
-      return newState as NocracyStore;
+      return newState as ClawtownStore;
     }),
 }));

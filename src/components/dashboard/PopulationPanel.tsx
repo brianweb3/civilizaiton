@@ -1,11 +1,11 @@
 "use client";
 
-import { useNocracyStore } from "@/store/simulation";
+import { useClawtownStore } from "@/store/simulation";
 import { useMemo } from "react";
 
 export default function PopulationPanel() {
-  const population = useNocracyStore((state) => state.population);
-  const agents = useNocracyStore((state) => state.agents);
+  const population = useClawtownStore((state) => state.population);
+  const agents = useClawtownStore((state) => state.agents);
 
   const stats = useMemo(() => {
     const active = agents.filter((a) => a.status === "ACTIVE").length;

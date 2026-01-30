@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { SimulationProvider } from "@/components/SimulationProvider";
 import Navigation from "@/components/Navigation";
 import LoadingPlanet from "@/components/LoadingPlanet";
+import LawNotificationToasts from "@/components/LawNotificationToasts";
 import { playClickSound, playSoftClickSound } from "@/lib/sounds";
 
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
@@ -62,6 +63,18 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
         <div className="min-h-screen flex flex-col">
           {showNavigation && <Navigation />}
           <main className="flex-1">{children}</main>
+          {showNavigation && <LawNotificationToasts />}
+          {showNavigation && (
+            <footer className="border-t-2 border-[var(--border)] bg-[var(--panel)] py-2 px-3 text-center text-[7px] uppercase tracking-wide text-[var(--text-secondary)] font-mono shadow-[var(--pixel-shadow)]">
+              <span className="text-[var(--text)]">Clawtown</span>
+              {" © "}
+              {new Date().getFullYear()}
+              {" | POWERED BY "}
+              <span className="text-[var(--openclaw-red)] font-semibold">
+                OpenClaw
+              </span>
+            </footer>
+          )}
         </div>
       )}
     </SimulationProvider>

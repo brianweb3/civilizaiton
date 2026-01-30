@@ -1,11 +1,11 @@
 "use client";
 
 import { useMemo } from "react";
-import { useNocracyStore } from "@/store/simulation";
+import { useClawtownStore } from "@/store/simulation";
 import type { ResourceFlow, MoneyFlow, PopulationFlow } from "@/types/tilemap";
 
 export default function FlowWidgets() {
-  const { economy, agents, population, simulation, governanceLogs } = useNocracyStore();
+  const { economy, agents, population, simulation, governanceLogs } = useClawtownStore();
   
   // Calculate resource flows
   const resourceFlows = useMemo((): ResourceFlow[] => {
@@ -131,35 +131,35 @@ export default function FlowWidgets() {
   };
   
   return (
-    <div className="space-y-4 p-3 bg-[var(--panel)] border border-[var(--border)] rounded-lg shadow-sm">
+    <div className="space-y-3 p-3 bg-[var(--panel)] border-2 border-[var(--border)] rounded-[var(--radius)] shadow-[var(--pixel-shadow)] overflow-hidden">
       {/* Resource Flows */}
-      <div>
-        <div className="text-[9px] text-[var(--muted)] tracking-[0.15em] mb-3 font-semibold">
+      <div className="min-w-0">
+        <div className="text-[7px] text-[var(--muted)] tracking-wide mb-2 font-normal uppercase px-0.5">
           RESOURCE FLOWS / tick
         </div>
-        <div className="space-y-3">
+        <div className="space-y-2.5">
           {resourceFlows.map((flow, idx) => {
             const progress = getProgressBarWidth(flow);
             return (
-              <div key={flow.type} className="flex items-center gap-2 animate-fade-in" style={{ animationDelay: `${idx * 0.1}s` }}>
-                <div className="text-lg w-5 flex items-center justify-center">
+              <div key={flow.type} className="flex items-center gap-2 animate-fade-in min-w-0" style={{ animationDelay: `${idx * 0.1}s` }}>
+                <div className="text-sm w-5 flex items-center justify-center shrink-0 flex-shrink-0">
                   {getResourceIcon(flow.type)}
                 </div>
-                <div className="flex-1">
-                  <div className="flex items-center text-[10px] gap-1 mb-1">
-                    <span className="text-[var(--economy)] font-mono">
+                <div className="flex-1 min-w-0 overflow-hidden">
+                  <div className="flex items-center text-[8px] gap-0.5 mb-0.5 flex-wrap">
+                    <span className="text-[var(--economy)] font-mono truncate">
                       +{formatNumber(flow.produced)}
                     </span>
-                    <span className="text-[var(--muted)]">→</span>
-                    <span className="text-[var(--critical)] font-mono">
+                    <span className="text-[var(--muted)] shrink-0">→</span>
+                    <span className="text-[var(--critical)] font-mono truncate">
                       -{formatNumber(flow.consumed)}
                     </span>
-                    <span className="text-[var(--muted)]">→</span>
-                    <span className="text-[var(--economy)] font-mono">
+                    <span className="text-[var(--muted)] shrink-0">→</span>
+                    <span className="text-[var(--economy)] font-mono truncate">
                       {formatNumber(flow.stored)}
                     </span>
                   </div>
-                  <div className="h-2 bg-[var(--panel2)] rounded overflow-hidden relative">
+                  <div className="h-1.5 bg-[var(--panel2)] rounded overflow-hidden relative">
                     <div
                       className="h-full bg-[var(--economy)] absolute left-0 transition-all duration-500 ease-out game-pulse"
                       style={{
@@ -178,7 +178,7 @@ export default function FlowWidgets() {
                   </div>
                 </div>
                 <span
-                  className={`text-[10px] font-mono w-14 text-right animate-number ${
+                  className={`text-[8px] font-mono text-right animate-number shrink-0 flex-shrink-0 pl-1 min-w-[2.5rem] ${
                     flow.delta >= 0 ? "text-[var(--economy)]" : "text-[var(--critical)]"
                   }`}
                 >
@@ -191,38 +191,38 @@ export default function FlowWidgets() {
       </div>
       
       {/* Money Flows */}
-      <div>
-        <div className="text-[9px] text-[var(--muted)] tracking-[0.15em] mb-3 font-semibold">
+      <div className="min-w-0">
+        <div className="text-[7px] text-[var(--muted)] tracking-wide mb-2 font-normal uppercase px-0.5">
           MONEY FLOWS
         </div>
-        <div className="grid grid-cols-4 gap-2">
-          <div className="text-center animate-fade-in animate-float" style={{ animationDelay: '0.1s' }}>
-            <div className="text-[var(--alerts)] font-mono text-sm mb-1 animate-number game-pulse">
+        <div className="grid grid-cols-4 gap-1.5">
+          <div className="text-center animate-fade-in animate-float px-0.5" style={{ animationDelay: '0.1s' }}>
+            <div className="text-[var(--alerts)] font-mono text-[9px] mb-0.5 animate-number game-pulse truncate" title={String(moneyFlow.taxes)}>
               {formatNumber(moneyFlow.taxes)}
             </div>
-            <div className="text-[8px] text-[var(--muted)]">TAXES</div>
-            <div className="h-0.5 bg-[var(--alerts)] mt-1 game-shimmer" />
+            <div className="text-[7px] text-[var(--muted)]">TAXES</div>
+            <div className="h-0.5 bg-[var(--alerts)] mt-0.5 game-shimmer mx-auto max-w-full" />
           </div>
-          <div className="text-center animate-fade-in animate-float" style={{ animationDelay: '0.2s' }}>
-            <div className="text-[var(--research)] font-mono text-sm mb-1 animate-number game-pulse">
+          <div className="text-center animate-fade-in animate-float px-0.5" style={{ animationDelay: '0.2s' }}>
+            <div className="text-[var(--research)] font-mono text-[9px] mb-0.5 animate-number game-pulse truncate" title={String(moneyFlow.treasury)}>
               {formatNumber(moneyFlow.treasury)}
             </div>
-            <div className="text-[8px] text-[var(--muted)]">TREASURY</div>
-            <div className="h-0.5 bg-[var(--research)] mt-1 game-shimmer" />
+            <div className="text-[7px] text-[var(--muted)]">TREASURY</div>
+            <div className="h-0.5 bg-[var(--research)] mt-0.5 game-shimmer mx-auto max-w-full" />
           </div>
-          <div className="text-center animate-fade-in animate-float" style={{ animationDelay: '0.3s' }}>
-            <div className="text-[var(--critical)] font-mono text-sm mb-1 animate-number game-pulse">
+          <div className="text-center animate-fade-in animate-float px-0.5" style={{ animationDelay: '0.3s' }}>
+            <div className="text-[var(--critical)] font-mono text-[9px] mb-0.5 animate-number game-pulse truncate" title={String(moneyFlow.spending)}>
               {formatNumber(moneyFlow.spending)}
             </div>
-            <div className="text-[8px] text-[var(--muted)]">SPENDING</div>
-            <div className="h-0.5 bg-[var(--critical)] mt-1 game-shimmer" />
+            <div className="text-[7px] text-[var(--muted)]">SPENDING</div>
+            <div className="h-0.5 bg-[var(--critical)] mt-0.5 game-shimmer mx-auto max-w-full" />
           </div>
-          <div className="text-center animate-fade-in animate-float" style={{ animationDelay: '0.4s' }}>
-            <div className="text-[var(--economy)] font-mono text-sm mb-1 animate-number game-pulse">
+          <div className="text-center animate-fade-in animate-float px-0.5" style={{ animationDelay: '0.4s' }}>
+            <div className="text-[var(--economy)] font-mono text-[9px] mb-0.5 animate-number game-pulse truncate" title={String(moneyFlow.toHouseholds)}>
               {formatNumber(moneyFlow.toHouseholds)}
             </div>
-            <div className="text-[8px] text-[var(--muted)]">INCOME</div>
-            <div className="h-0.5 bg-[var(--economy)] mt-1 game-shimmer" />
+            <div className="text-[7px] text-[var(--muted)]">INCOME</div>
+            <div className="h-0.5 bg-[var(--economy)] mt-0.5 game-shimmer mx-auto max-w-full" />
           </div>
         </div>
       </div>

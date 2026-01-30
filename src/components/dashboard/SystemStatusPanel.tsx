@@ -1,10 +1,10 @@
 "use client";
 
-import { useNocracyStore } from "@/store/simulation";
+import { useClawtownStore } from "@/store/simulation";
 import { getSimulationEngine } from "@/lib/simulation-engine";
 
 export default function SystemStatusPanel() {
-  const simulation = useNocracyStore((state) => state.simulation);
+  const simulation = useClawtownStore((state) => state.simulation);
 
   const formatTime = (tick: number) => {
     const hours = Math.floor(tick / 3600);

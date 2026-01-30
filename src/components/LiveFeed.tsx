@@ -1,13 +1,13 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { useNocracyStore } from "@/store/simulation";
+import { useClawtownStore } from "@/store/simulation";
 import Link from "next/link";
 
 type FeedFilter = "All" | "Laws" | "Economy" | "Research" | "Ethics";
 
 export default function LiveFeed() {
-  const { governanceLogs, laws, research, ethics } = useNocracyStore();
+  const { governanceLogs, laws, research, ethics } = useClawtownStore();
   const [filter, setFilter] = useState<FeedFilter>("All");
   
   // Combine all events

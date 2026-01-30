@@ -1,12 +1,12 @@
 "use client";
 
-import { useNocracyStore } from "@/store/simulation";
+import { useClawtownStore } from "@/store/simulation";
 import { useState } from "react";
 
 type LogFilter = "ALL" | "INFO" | "WARNING" | "CRITICAL";
 
 export default function GovernanceLogPanel() {
-  const logs = useNocracyStore((state) => state.governanceLogs);
+  const logs = useClawtownStore((state) => state.governanceLogs);
   const [filter, setFilter] = useState<LogFilter>("ALL");
   const [expanded, setExpanded] = useState<string | null>(null);
 

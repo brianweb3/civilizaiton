@@ -2,7 +2,7 @@
 
 import { useMemo } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { useNocracyStore } from "@/store/simulation";
+import { useClawtownStore } from "@/store/simulation";
 import Link from "next/link";
 import type { AgentRole } from "@/types/simulation";
 
@@ -11,10 +11,10 @@ export default function AgentDetailPage() {
   const router = useRouter();
   const agentId = params.id as string;
   
-  const agent = useNocracyStore((state) =>
+  const agent = useClawtownStore((state) =>
     state.agents.find((a) => a.id === agentId)
   );
-  const allAgents = useNocracyStore((state) => state.agents);
+  const allAgents = useClawtownStore((state) => state.agents);
 
   const roleColors: Record<AgentRole, string> = {
     WORKER: "#94a3b8",

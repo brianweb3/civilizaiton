@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, useCallback } from "react";
-import { useNocracyStore } from "@/store/simulation";
+import { useClawtownStore } from "@/store/simulation";
 import { useIsoCamera } from "@/hooks/useIsoCamera";
 import {
   tileToScreen,
@@ -21,7 +21,7 @@ interface IsoMapCanvasProps {
   onCameraChange?: (camera: { x: number; y: number; zoom: number }) => void;
 }
 
-// Terrain colors (bright Civilization-inspired)
+// Terrain colors (bright Clawtown-inspired)
 const TERRAIN_COLORS: Record<TerrainType, string> = {
   PLAINS: "#6fbf73",      // Light green (grass)
   WATER: "#2A74B8",       // Blue (water)
@@ -68,7 +68,7 @@ export default function IsoMapCanvas({
   const [selectedTile, setSelectedTile] = useState<{ x: number; y: number } | null>(null);
   const [mapMode, setMapMode] = useState<"terrain" | "population" | "economy">("terrain");
   
-  const { agents, buildings, districts } = useNocracyStore();
+  const { agents, buildings, districts } = useClawtownStore();
   const camera = useIsoCamera(width / 2, height / 2, 1.0);
   
   // Notify parent of camera changes

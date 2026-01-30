@@ -1,4 +1,4 @@
-// NOCRACY METRICS SYSTEM
+// CLAWTOWN METRICS SYSTEM
 // Complete metrics model for evaluating the state of the territory
 
 // ============================================

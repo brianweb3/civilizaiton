@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
-import { useNocracyStore } from "@/store/simulation";
+import { useClawtownStore } from "@/store/simulation";
 import type { MetricDriver, DriverCause } from "@/types/tilemap";
 
 export default function MetricDrivers() {
@@ -13,7 +13,7 @@ export default function MetricDrivers() {
     laws, 
     metrics,
     alerts 
-  } = useNocracyStore();
+  } = useClawtownStore();
   
   // Compute metric drivers based on recent events and changes
   const drivers = useMemo((): MetricDriver[] => {

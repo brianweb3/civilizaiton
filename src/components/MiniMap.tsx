@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { useNocracyStore } from "@/store/simulation";
+import { useClawtownStore } from "@/store/simulation";
 import type { CameraState } from "@/hooks/useIsoCamera";
 
 interface MiniMapProps {
@@ -24,7 +24,7 @@ export default function MiniMap({
   onTileClick,
 }: MiniMapProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const { agents, buildings, districts } = useNocracyStore();
+  const { agents, buildings, districts } = useClawtownStore();
 
   useEffect(() => {
     const canvas = canvasRef.current;

@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
-import { useNocracyStore } from "@/store/simulation";
+import { useClawtownStore } from "@/store/simulation";
 import type { Agent } from "@/types/simulation";
 import type { RoleDistribution, WealthBucket, AgeBucket, TopContributor } from "@/types/tilemap";
 
@@ -18,7 +18,7 @@ const ROLE_COLORS: Record<Agent["role"], string> = {
 };
 
 export default function CitizenDistribution() {
-  const { agents } = useNocracyStore();
+  const { agents } = useClawtownStore();
   
   const activeAgents = useMemo(
     () => agents.filter((a) => a.status === "ACTIVE"),

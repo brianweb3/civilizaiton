@@ -1,4 +1,4 @@
-// NOCRACY METRICS CALCULATOR
+// CLAWTOWN METRICS CALCULATOR
 // Computes all metrics from simulation state
 
 import type {

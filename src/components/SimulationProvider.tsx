@@ -2,10 +2,10 @@
 
 import { useEffect } from "react";
 import { getSimulationEngine } from "@/lib/simulation-engine";
-import { useNocracyStore } from "@/store/simulation";
+import { useClawtownStore } from "@/store/simulation";
 
 export function SimulationProvider({ children }: { children: React.ReactNode }) {
-  const applyTick = useNocracyStore((state) => state.applyTick);
+  const applyTick = useClawtownStore((state) => state.applyTick);
 
   useEffect(() => {
     const engine = getSimulationEngine();

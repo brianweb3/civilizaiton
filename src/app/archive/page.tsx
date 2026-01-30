@@ -1,18 +1,18 @@
 "use client";
 
 import { useState } from "react";
-import { useNocracyStore } from "@/store/simulation";
+import { useClawtownStore } from "@/store/simulation";
 
 export default function ArchivePage() {
-  const simulation = useNocracyStore((state) => state.simulation);
-  const population = useNocracyStore((state) => state.population);
-  const economy = useNocracyStore((state) => state.economy);
-  const agents = useNocracyStore((state) => state.agents);
-  const buildings = useNocracyStore((state) => state.buildings);
-  const laws = useNocracyStore((state) => state.laws);
-  const governanceLogs = useNocracyStore((state) => state.governanceLogs);
-  const research = useNocracyStore((state) => state.research);
-  const ethics = useNocracyStore((state) => state.ethics);
+  const simulation = useClawtownStore((state) => state.simulation);
+  const population = useClawtownStore((state) => state.population);
+  const economy = useClawtownStore((state) => state.economy);
+  const agents = useClawtownStore((state) => state.agents);
+  const buildings = useClawtownStore((state) => state.buildings);
+  const laws = useClawtownStore((state) => state.laws);
+  const governanceLogs = useClawtownStore((state) => state.governanceLogs);
+  const research = useClawtownStore((state) => state.research);
+  const ethics = useClawtownStore((state) => state.ethics);
 
   const [activeTab, setActiveTab] = useState<"logs" | "snapshots" | "exports">("logs");
 
@@ -34,23 +34,23 @@ export default function ArchivePage() {
           ethics,
           exportedAt: Date.now(),
         };
-        filename = `nocracy-full-export-T${simulation.tick}.json`;
+        filename = `clawtown-full-export-T${simulation.tick}.json`;
         break;
       case "agents":
         data = { agents, exportedAt: Date.now() };
-        filename = `nocracy-agents-T${simulation.tick}.json`;
+        filename = `clawtown-agents-T${simulation.tick}.json`;
         break;
       case "laws":
         data = { laws, exportedAt: Date.now() };
-        filename = `nocracy-laws-T${simulation.tick}.json`;
+        filename = `clawtown-laws-T${simulation.tick}.json`;
         break;
       case "logs":
         data = { governanceLogs, exportedAt: Date.now() };
-        filename = `nocracy-logs-T${simulation.tick}.json`;
+        filename = `clawtown-logs-T${simulation.tick}.json`;
         break;
       case "economy":
         data = { economy, exportedAt: Date.now() };
-        filename = `nocracy-economy-T${simulation.tick}.json`;
+        filename = `clawtown-economy-T${simulation.tick}.json`;
         break;
       default:
         return;

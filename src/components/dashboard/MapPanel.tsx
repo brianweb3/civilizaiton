@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useEffect, useCallback, useMemo } from "react";
-import { useNocracyStore } from "@/store/simulation";
+import { useClawtownStore } from "@/store/simulation";
 import { BuildingType, AgentRole } from "@/types/simulation";
 
 const CANVAS_SIZE = 256;
@@ -10,9 +10,9 @@ const SCALE = CANVAS_SIZE / MAP_SIZE;
 
 export default function MapPanel() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const agents = useNocracyStore((state) => state.agents);
-  const buildings = useNocracyStore((state) => state.buildings);
-  const tick = useNocracyStore((state) => state.simulation.tick);
+  const agents = useClawtownStore((state) => state.agents);
+  const buildings = useClawtownStore((state) => state.buildings);
+  const tick = useClawtownStore((state) => state.simulation.tick);
 
   const buildingColors: Record<BuildingType, string> = useMemo(() => ({
     HOUSE: "#4ade80",

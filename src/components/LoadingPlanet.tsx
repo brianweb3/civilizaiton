@@ -35,25 +35,25 @@ export default function LoadingPlanet({ onComplete }: LoadingPlanetProps) {
   if (!isVisible) return null;
 
   return (
-    <div className="fixed inset-0 z-[9999] bg-[var(--bg)] flex items-center justify-center">
+    <div className="fixed inset-0 z-[9999] bg-[var(--bg)] flex items-center justify-center font-mono">
       <div className="flex flex-col items-center gap-6 w-full max-w-md px-6">
-        {/* LOADING text */}
-        <div className="text-[var(--text)] uppercase text-2xl font-light tracking-wider">
-          LOADING
+        {/* LOADING CLAWTOWN — pixel style */}
+        <div className="text-[var(--text)] uppercase text-sm font-normal tracking-wide">
+          LOADING CLAWTOWN
         </div>
-        
-        {/* Progress line */}
-        <div className="w-full">
+
+        {/* Progress — pixel block */}
+        <div className="w-full border-2 border-[var(--border)] p-1 shadow-[var(--pixel-shadow)]">
           <div className="loading-progress-bar-sandy">
-            <div 
+            <div
               className="loading-progress-fill-sandy"
               style={{ width: `${progress}%` }}
             />
           </div>
         </div>
-        
+
         {/* Percentage */}
-        <div className="text-[var(--text)] text-lg font-light font-mono">
+        <div className="text-[var(--openclaw-red)] text-xs font-normal">
           {Math.round(progress)}%
         </div>
       </div>

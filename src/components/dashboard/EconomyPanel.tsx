@@ -1,9 +1,9 @@
 "use client";
 
-import { useNocracyStore } from "@/store/simulation";
+import { useClawtownStore } from "@/store/simulation";
 
 export default function EconomyPanel() {
-  const economy = useNocracyStore((state) => state.economy);
+  const economy = useClawtownStore((state) => state.economy);
 
   const formatNumber = (num: number) => {
     if (num >= 1000000) return (num / 1000000).toFixed(1) + "M";

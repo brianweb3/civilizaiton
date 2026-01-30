@@ -1,4 +1,4 @@
-// NOCRACY SIMULATION ENGINE
+// CLAWTOWN SIMULATION ENGINE
 // Agent-based modeling with discrete time ticks
 // 1000x1000 pixel world with agents and buildings
 
@@ -217,7 +217,27 @@ function generateBuilding(tick: number, builderAgent: Agent): Building {
   };
 }
 
-// Generate a law
+// Paragraphs and clauses for voluminous law text
+const LAW_DESCRIPTION_PARAGRAPHS = [
+  'All entities subject to this jurisdiction shall comply with the provisions set forth herein. The governing module has determined that unregulated activity in this domain poses measurable risk to system stability and collective welfare. This instrument establishes clear boundaries, procedures, and accountability mechanisms.',
+  'Implementation shall be phased in accordance with the attached schedule. Monitoring and reporting obligations apply to all affected units. Non-compliance will trigger escalation protocols as defined in the enforcement annex. Exemptions may be granted only through the standard petition process.',
+  'Definitions used in this law are consistent with the constitutional glossary and prevailing interpretation guidelines. Where ambiguity exists, the ethics committee ruling shall apply. Amendments require a supermajority of the governance council and may not contradict constitutional principles.',
+  'This law integrates with existing frameworks governing resource allocation, research ethics, and social harmony. Cross-references to related instruments are included in the appendix. Sunset clauses and review intervals are specified in Section VII.',
+];
+
+const LAW_PURPOSE_PARAGRAPHS = [
+  'The primary purpose of this legislation is to align sector outcomes with the territory\'s long-term stability and growth targets. Historical simulation data and current metrics indicate that unaddressed variance in this area leads to increased inequality, reduced trust in governance, and suboptimal resource utilization. By establishing explicit norms and incentives, the system can converge toward equilibrium while preserving individual autonomy within safe bounds.',
+  'Secondary objectives include improving transparency of decision-making, enabling better forecasting by central and distributed agents, and creating a level playing field for new and existing participants. The governance module has weighed alternative approaches—including non-intervention and voluntary guidelines—and concluded that binding regulation with clear enforcement is necessary to achieve the desired outcomes within an acceptable timeframe.',
+  'This law also serves to codify emerging best practices observed across the population and to prevent race-to-the-bottom dynamics that have been observed in similar domains. Periodic review is built in to allow the system to adapt as conditions and knowledge evolve.',
+];
+
+const LAW_REASONING_PARAGRAPHS = [
+  'The reasoning behind this law rests on three pillars: empirical evidence from past ticks, alignment with the LOVE EQUATION and constitutional principles, and projected impact on key metrics. Simulation runs with and without analogous regulation show a statistically significant improvement in state health score and a reduction in critical alerts when such measures are in place.',
+  'Stakeholder analysis indicates that a majority of affected agents will experience neutral or positive outcomes; the minority facing short-term constraints are predominantly in categories that benefit from the resulting system-wide stability. The governance module has therefore determined that the net benefit justifies the intervention. Ethical review has not flagged any irreversible harm or autonomy violations beyond the accepted threshold.',
+  'Risk assessment: LOW. Implementation cost is within budget allocation. Enforcement is delegated to existing structures. No dependency on unproven technology or external inputs. This law is reversible under standard repeal procedures if monitoring reveals unintended consequences.',
+];
+
+// Generate a law with voluminous description, purpose, and reasoning
 function generateLaw(tick: number, governorId: string, category?: LawCategory): Law {
   const categories: LawCategory[] = ['ECONOMIC', 'SOCIAL', 'RESEARCH', 'INFRASTRUCTURE', 'ETHICAL', 'EMERGENCY'];
   const assignedCategory = category || categories[Math.floor(seededRandom() * categories.length)];
@@ -228,15 +248,31 @@ function generateLaw(tick: number, governorId: string, category?: LawCategory): 
   const verb = lawVerbs[Math.floor(seededRandom() * lawVerbs.length)];
   const subject = lawSubjects[Math.floor(seededRandom() * lawSubjects.length)];
   
+  const descCount = 2 + Math.floor(seededRandom() * 2);
+  const purposeCount = 2 + Math.floor(seededRandom() * 2);
+  const reasoningCount = 2 + Math.floor(seededRandom() * 2);
+  
+  const pick = (arr: string[], n: number) => {
+    const indices = new Set<number>();
+    while (indices.size < Math.min(n, arr.length)) {
+      indices.add(Math.floor(seededRandom() * arr.length));
+    }
+    return Array.from(indices).map((i) => arr[i]).join('\n\n');
+  };
+  
+  const description = `This law ${verb.toLowerCase()}s ${subject} to optimize system performance and maintain stability.\n\n${pick(LAW_DESCRIPTION_PARAGRAPHS, descCount)}`;
+  const purpose = `Improve ${assignedCategory.toLowerCase()} metrics and ensure sustainable growth.\n\n${pick(LAW_PURPOSE_PARAGRAPHS, purposeCount)}`;
+  const reasoning = `Analysis indicates ${subject} optimization will yield positive long-term outcomes.\n\n${pick(LAW_REASONING_PARAGRAPHS, reasoningCount)}`;
+  
   return {
     id: `LAW-${tick.toString(16).toUpperCase().padStart(6, '0')}-${uuid().slice(0, 4).toUpperCase()}`,
     title: `${verb} ${subject}`,
-    description: `This law ${verb.toLowerCase()}s ${subject} to optimize system performance and maintain stability.`,
+    description,
     category: assignedCategory,
     status: 'ACTIVE',
     generatedBy: governorId,
     createdAt: tick,
-    purpose: `Improve ${assignedCategory.toLowerCase()} metrics and ensure sustainable growth.`,
+    purpose,
     affectedPopulationPercent: Math.floor(seededRandom() * 80) + 10,
     impactMetrics: {
       economicEffect: (seededRandom() - 0.3) * 0.2,
@@ -245,7 +281,7 @@ function generateLaw(tick: number, governorId: string, category?: LawCategory): 
       populationGrowth: (seededRandom() - 0.5) * 0.05,
     },
     isConstitutional: false,
-    reasoning: `Analysis indicates ${subject} optimization will yield positive long-term outcomes. Risk assessment: LOW.`,
+    reasoning,
     history: [{
       tick,
       action: 'CREATED',

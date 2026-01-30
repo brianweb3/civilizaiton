@@ -11,7 +11,7 @@ import {
   Text,
   TextureStyle,
 } from "pixi.js";
-import { useNocracyStore } from "@/store/simulation";
+import { useClawtownStore } from "@/store/simulation";
 import { sliceTexture } from "@/lib/tilesetSlice";
 import { TILE_SIZE, TILEMAP, getTileCoords } from "@/lib/pixelholeMap";
 import { CUSTOM_SPRITES, getSpritePath, getSpritesByType } from "@/lib/customSpritesMap";
@@ -42,7 +42,7 @@ export default function TopDownMapPixi({
   const [debugMode, setDebugMode] = useState(false);
   const [camera, setCamera] = useState({ x: 0, y: 0, zoom: 1.45 });
   
-  const { agents, buildings, districts } = useNocracyStore();
+  const { agents, buildings, districts } = useClawtownStore();
   
   // Get terrain type for a tile (procedural generation with more variety)
   const getTerrainType = useCallback((x: number, y: number): TerrainType => {

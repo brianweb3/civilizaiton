@@ -56,7 +56,7 @@ function generateRandomMessage() {
     message += `💭 The governance system has spoken!\n\n`;
   } else if (msg.type === 'building') {
     message += `<b>${msg.content}</b>\nType: <code>${msg.buildingType}</code>\n📍 Location: (${Math.floor(Math.random() * 1000)}, ${Math.floor(Math.random() * 1000)})\n\n`;
-    message += `💭 Another structure rises in the civilization!\n\n`;
+    message += `💭 Another structure rises in Clawtown!\n\n`;
   } else if (msg.type === 'research') {
     message += `<b>${msg.content}</b>\n\n`;
     message += `<i>Breakthrough in autonomous decision-making systems.</i>\n\n`;
@@ -68,7 +68,7 @@ function generateRandomMessage() {
   } else if (msg.type === 'population') {
     const births = 'births' in msg ? (msg.births as number) : 0;
     message += `<b>${msg.content}</b>\n<b>+${births}</b> new births this cycle\n\n`;
-    message += `💭 New citizens join the civilization!\n\n`;
+    message += `💭 New citizens join Clawtown!\n\n`;
   }
 
   message += `━━━━━━━━━━━━━━━━━━━━\n`;

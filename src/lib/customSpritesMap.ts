@@ -1,5 +1,5 @@
 /**
- * Custom sprites mapping for NOCRACY map
+ * Custom sprites mapping for CLAWTOWN map
  * Individual sprite files with their dimensions
  */
 

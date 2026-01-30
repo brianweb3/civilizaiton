@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, useCallback } from "react";
-import { useNocracyStore } from "@/store/simulation";
+import { useClawtownStore } from "@/store/simulation";
 import type { Agent, Building } from "@/types/simulation";
 import {
   GRID_SIZE,
@@ -68,7 +68,7 @@ export default function TileMapRenderer({
   const [rotateStart, setRotateStart] = useState({ angle: 0, centerX: 0, centerY: 0 });
   const [mapControlsExpanded, setMapControlsExpanded] = useState(false);
   
-  const { agents, buildings, districts } = useNocracyStore();
+  const { agents, buildings, districts } = useClawtownStore();
   
   // Generate terrain procedurally (original simple version)
   const getTerrainType = useCallback((x: number, y: number): TerrainType => {
@@ -160,7 +160,7 @@ export default function TileMapRenderer({
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
     
-    // Clear canvas with parchment background (Civilization style)
+    // Clear canvas with parchment background (Clawtown style)
     ctx.fillStyle = "#F4F1E8";
     ctx.fillRect(0, 0, width, height);
     

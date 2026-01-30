@@ -1,4 +1,4 @@
-// NOCRACY SIMULATION TYPES
+// CLAWTOWN SIMULATION TYPES
 // All data structures for the autonomous territory
 
 export interface SimulationState {

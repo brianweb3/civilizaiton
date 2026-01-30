@@ -1,4 +1,4 @@
-// Telegram Bot Integration for CivilizAItion Logs
+// Telegram Bot Integration for Clawtown Logs
 
 const TELEGRAM_BOT_TOKEN = '8174197921:AAHyxQDKIyj5455rhEX6rd9vAtnT2Lx2j7g';
 const TELEGRAM_CHAT_ID = '@civilizaition_logs';
@@ -154,7 +154,7 @@ export function formatBuildingCreated(
   const emoji = typeEmoji[building.type] || '🏗️';
   
   const reactions = [
-    "Another structure rises in the civilization!",
+    "Another structure rises in Clawtown!",
     "Construction complete - the city expands.",
     "New infrastructure joins the network.",
     "Building erected and ready for use.",
@@ -178,7 +178,7 @@ export function formatPopulationMilestone(
   stats: StatsData
 ): string {
   const reactions = [
-    "New citizens join the civilization!",
+    "New citizens join Clawtown!",
     "The population continues to grow.",
     "Birth rates are looking healthy.",
     "More minds join the collective.",

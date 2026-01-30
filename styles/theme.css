@@ -1,73 +1,102 @@
-/* NOCRACY "CIVILIZATION DAYLIGHT" THEME
-   Central design tokens for the bright, atlas-inspired UI.
-   These variables are consumed by global styles and Tailwind utility classes
-   via CSS variable references (e.g. bg-[var(--bg)]). */
+/* CLAWBOOK-STYLE THEME — Clawtown / OpenClaw
+   HSL-based tokens: window, border, radius as in Clawbook.
+   Use hsl(var(--name)) for colors that are HSL components. */
 
 :root {
-  /* Base surfaces */
-  --bg: #F4F1E8;            /* parchment */
-  --bg2: #E9E2D0;           /* warm sand */
-  --panel: #FFFFFF;         /* paper */
-  --panel2: #F9F6EE;        /* soft paper */
-  --border: rgba(40, 30, 20, 0.18);
+  /* Clawbook-style HSL components (use with hsl(var(--name))) */
+  --background: 0 0% 96%;
+  --foreground: 0 0% 8%;
+  --card: 0 0% 100%;
+  --card-foreground: 0 0% 8%;
+  --primary: 0 85% 50%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 0 0% 92%;
+  --secondary-foreground: 0 0% 15%;
+  --muted: 0 0% 90%;
+  --muted-foreground: 0 0% 45%;
+  --accent: 0 0% 92%;
+  --accent-foreground: 0 0% 8%;
+  --destructive: 0 84% 50%;
+  --destructive-foreground: 0 0% 100%;
+  --border-hsl: 0 0% 85%;
+  --input: 0 0% 92%;
+  --ring: 0 85% 50%;
+  --radius: 0; /* pixel style: sharp corners */
+  --pixel-shadow: 2px 2px 0 hsl(var(--foreground) / 0.12);
+  --pixel-shadow-red: 2px 2px 0 hsl(var(--claw-red-dim) / 0.5);
 
-  /* Text */
-  --text: #1F2328;          /* near-black */
-  --muted: rgba(31, 35, 40, 0.65);
-  --muted-soft: rgba(31, 35, 40, 0.45);
+  /* Clawbook extras */
+  --claw-red: 0 85% 50%;
+  --claw-red-dim: 0 70% 40%;
+  --claw-surface: 0 0% 98%;
+  --claw-surface-elevated: 0 0% 100%;
+  --claw-border: 0 0% 85%;
 
-  /* Map / nature accents */
-  --grass: #4E8C4A;
-  --forest: #2F6B3A;
-  --water: #2A74B8;
-  --deepwater: #1E4E7A;
-  --desert: #D9B56C;
-  --mountain: #8A8F98;
+  /* Resolved colors for existing code (bg-[var(--bg)] etc.) */
+  --bg: hsl(var(--background));
+  --bg2: hsl(0 0% 92%);
+  --panel: hsl(var(--card));
+  --panel2: hsl(var(--claw-surface));
+  --text: hsl(var(--foreground));
+  --openclaw-red: hsl(var(--primary));
+  --openclaw-red-hover: hsl(var(--claw-red-dim));
+  --openclaw-red-soft: hsl(var(--primary) / 0.12);
+
+  /* Border: resolved so border-[var(--border)] works everywhere */
+  --border: hsl(var(--border-hsl));
+
+  /* Map / game accents */
+  --grass: #2E7D32;
+  --forest: #1B5E20;
+  --water: #1565C0;
+  --deepwater: #0D47A1;
+  --desert: hsl(var(--primary));
+  --mountain: #424242;
 
   /* System accents */
-  --economy: #2E8B57;       /* emerald */
-  --research: #2A74B8;      /* blue */
-  --laws: #7A4E2D;          /* bronze/wood */
-  --ethics: #7C3AED;        /* violet */
-  --alerts: #C2410C;        /* burnt orange */
-  --critical: #B42318;      /* deep red */
+  --economy: hsl(var(--primary));
+  --research: hsl(var(--primary));
+  --laws: #5D4037;
+  --ethics: hsl(var(--primary));
+  --alerts: #BF360C;
+  --critical: hsl(var(--claw-red-dim));
 
-  /* Status aliases */
-  --status-ok: var(--economy);
+  /* Status */
+  --status-ok: #2E7D32;
   --status-warn: var(--alerts);
-  --status-crit: var(--critical);
+  --status-crit: hsl(var(--claw-red-dim));
 
-  /* Legacy aliases (to keep existing components working) */
+  /* Aliases */
   --bg-primary: var(--bg);
   --bg-secondary: var(--bg2);
   --bg-tertiary: var(--panel2);
-
   --text-primary: var(--text);
-  --text-secondary: var(--muted);
-  --text-muted: var(--muted-soft);
-
-  --accent-cyan: var(--research);
-  --accent-magenta: var(--ethics);
-  --accent-red: var(--alerts);
-
+  --text-secondary: hsl(var(--muted-foreground));
+  --text-muted: hsl(var(--muted-foreground));
+  --accent-cyan: hsl(var(--primary));
+  --accent-magenta: hsl(var(--primary));
+  --accent-red: hsl(var(--primary));
   --grid-line: var(--border);
-  --grid-active: rgba(40, 30, 20, 0.35);
-
+  --grid-active: hsl(var(--foreground) / 0.2);
   --status-active: var(--status-ok);
   --status-warning: var(--status-warn);
   --status-critical: var(--status-crit);
-  --status-inactive: rgba(148, 163, 184, 0.9);
+  --status-inactive: hsl(var(--muted-foreground) / 0.8);
 
-  /* Typography */
-  --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  /* Typography — pixel style (--font-pixel set by layout via next/font) */
+  --font-sans: var(--font-pixel, "Press Start 2P", "Courier New", monospace);
+  --font-mono: var(--font-pixel, "Press Start 2P", "Courier New", monospace);
+  --pixel-border: 2px;
+}
+
+/* Global border color from Clawbook (window/outline style) */
+* {
+  border-color: var(--border);
 }
 
 @theme inline {
-  /* Wire base Tailwind colors to theme tokens */
   --color-background: var(--bg);
   --color-foreground: var(--text);
-  --font-sans: var(--font-sans);
-  --font-mono: var(--font-mono);
+  --font-sans: var(--font-pixel);
+  --font-mono: var(--font-pixel);
 }
-

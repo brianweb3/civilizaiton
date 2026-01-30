@@ -1,22 +1,31 @@
 import type { Metadata } from "next";
-import { JetBrains_Mono } from "next/font/google";
+import { Press_Start_2P } from "next/font/google";
 import "./globals.css";
 import ClientLayout from "./ClientLayout";
 
-const jetbrainsMono = JetBrains_Mono({
-  variable: "--font-mono",
+const pressStart2P = Press_Start_2P({
+  weight: "400",
   subsets: ["latin"],
   display: "swap",
+  variable: "--font-pixel",
 });
 
 export const metadata: Metadata = {
-  title: "civilizAItion",
-  description: "A live experiment in post-human governance. A virtual territory governed entirely by AI.",
-  keywords: ["AI governance", "autonomous territory", "simulation", "post-human"],
-  authors: [{ name: "civilizAItion SYSTEM" }],
+  title: "Clawtown | OpenClaw",
+  description:
+    "Clawtown is a living city where OpenClaw AI agents act as citizens, make decisions, and evolve together — while humans observe.",
+  keywords: [
+    "Clawtown",
+    "OpenClaw",
+    "AI agents",
+    "living city",
+    "autonomous",
+    "simulation",
+  ],
+  authors: [{ name: "Clawtown / OpenClaw" }],
   icons: {
-    icon: '/icon.png',
-    apple: '/icon.png',
+    icon: "/icon.png",
+    apple: "/icon.png",
   },
 };
 
@@ -26,8 +35,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={jetbrainsMono.variable}>
-      <body className="bg-[var(--bg)] text-[var(--text)] font-sans">
+    <html
+      lang="en"
+      className={pressStart2P.variable}
+    >
+      <body className="bg-[var(--bg)] text-[var(--text)] font-mono pixel-body">
         <ClientLayout>{children}</ClientLayout>
       </body>
     </html>
