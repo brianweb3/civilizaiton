@@ -82,6 +82,34 @@ export default function Navigation() {
           </div>
         )}
 
+        {/* COPY CA & X (Twitter) — on simulation page */}
+        {pathname === "/simulation" && (
+          <div className="hidden sm:flex items-center gap-1 shrink-0">
+            <button
+              type="button"
+              onClick={() => {
+                const ca = typeof window !== "undefined" && process.env.NEXT_PUBLIC_CA_ADDRESS
+                  ? process.env.NEXT_PUBLIC_CA_ADDRESS
+                  : typeof window !== "undefined"
+                    ? window.location.origin
+                    : "";
+                navigator.clipboard?.writeText(ca).then(() => {}, () => {});
+              }}
+              className="px-2 py-1.5 text-[7px] font-normal uppercase bg-[var(--panel)] text-[var(--text)] border-2 border-[var(--border)] hover:bg-[var(--bg2)] transition-all"
+            >
+              COPY CA
+            </button>
+            <a
+              href="https://x.com/i/communities/2017285498591408442"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-2 py-1.5 text-[7px] font-normal uppercase bg-[var(--panel)] text-[var(--text)] border-2 border-[var(--border)] hover:bg-[var(--bg2)] transition-all inline-block"
+            >
+              X
+            </a>
+          </div>
+        )}
+
         {/* Nav links — SIMULATION with white text when active */}
         <nav className="flex items-center gap-1 shrink-0">
           {navItems.map((item) => {
