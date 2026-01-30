@@ -10,7 +10,7 @@ export default function LawNotificationToasts() {
   if (pendingLawNotifications.length === 0) return null;
 
   return (
-    <div className="fixed bottom-20 right-4 left-auto max-w-sm z-50 flex flex-col gap-2 pointer-events-auto">
+    <div className="fixed bottom-3 right-3 left-auto max-w-sm z-50 flex flex-col gap-2 pointer-events-auto">
       {pendingLawNotifications.map((law) => (
         <div
           key={law.id}
